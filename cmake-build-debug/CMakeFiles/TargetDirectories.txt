@@ -1,0 +1,3 @@
+C:/Users/User/Desktop/VideoProcessingStartCode/cmake-build-debug/CMakeFiles/VideoProcessingStartCode.dir
+C:/Users/User/Desktop/VideoProcessingStartCode/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/User/Desktop/VideoProcessingStartCode/cmake-build-debug/CMakeFiles/rebuild_cache.dir
