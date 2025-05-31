@@ -67,7 +67,7 @@ int main()
         cvtColor(grayImage,grayImage,COLOR_GRAY2BGR); //Farbraum des zweiten Bildes ist BGR, muss konvertiert werden, wird sonst nicht angezeigt
 
         Ptr<SimpleBlobDetector> blobDetector = SimpleBlobDetector::create();
-        blobDetector->read("C:/Users/User/Desktop/VideoProcessingStartCode/blobdetectorparams1.xml"); //Einlesen der params
+        blobDetector->read("..\\blobdetectorparams1.xml"); //Einlesen der params
         vector <KeyPoint> keypoints; //keypoints, die erkannt/detected werden
         blobDetector->detect(grayImage, keypoints);//Erkennung der Blobs, Punkte in keypoints vermerkt
         for(const KeyPoint& k: keypoints){ //for-each-loop: durch alle keypoints iterieren
