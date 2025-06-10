@@ -1,4 +1,3 @@
-
 /** Inspired by OpenCV-Tutorial https://docs.opencv.org/4.x/db/deb/tutorial_display_image.html
  Edited by Merijam Gotzes
  13.03.2024, 12.04.2024
@@ -11,6 +10,7 @@
 #include <opencv2/videoio.hpp>
 #include <opencv2/features2d.hpp>
 #include <iostream>
+#include <windows.h>
 
 using namespace std;
 using namespace cv;
@@ -44,8 +44,12 @@ int main()
         cout << "  Frame count :" << frame_count << endl;
     }
 
-    Mat frameMat, grayImage;
+    Mat frameMat, grayImage, edges;
     int i = 1;
+
+    // Bildschirm Höhe und Breite herausfinden
+    int screenWidth = GetSystemMetrics(SM_CXSCREEN);
+    int screenHeight = GetSystemMetrics(SM_CYSCREEN);
 
     while (cap.read(frameMat))
     {
@@ -55,33 +59,72 @@ int main()
         else
             cout << ".";
 
-        Size_<int> kSize = Size_(7,7);
-        GaussianBlur(frameMat, frameMat,kSize,0,0);
-
+        // Kopie erstellen für edge detection
+        Mat frameCopy = frameMat.clone();
+        
+        // Blob detection pipeline
         cvtColor(frameMat, grayImage, COLOR_BGR2HSV);
-        std::vector lower = {35, 25, 0};
-        std::vector upper = {95,255,255};
-        inRange(grayImage,lower, upper, grayImage);
+        std::vector<int> lower = {35, 25, 0};
+        std::vector<int> upper = {95, 255, 255};
+        inRange(grayImage, lower, upper, grayImage);
 
-        medianBlur(grayImage, grayImage,5);
-        cvtColor(grayImage,grayImage,COLOR_GRAY2BGR); //Farbraum des zweiten Bildes ist BGR, muss konvertiert werden, wird sonst nicht angezeigt
-
+        medianBlur(grayImage, grayImage, 5);
+        
+        // Blob detection auf schwarz-weiß Bild
         Ptr<SimpleBlobDetector> blobDetector = SimpleBlobDetector::create();
-        blobDetector->read("..\\blobdetectorparams1.xml"); //Einlesen der params
-        vector <KeyPoint> keypoints; //keypoints, die erkannt/detected werden
-        blobDetector->detect(grayImage, keypoints);//Erkennung der Blobs, Punkte in keypoints vermerkt
-        for(const KeyPoint& k: keypoints){ //for-each-loop: durch alle keypoints iterieren
-            circle(frameMat,k.pt,30, cv::Scalar(0,0,0), 2); //Ein dünner, schwarzer Kreis um alle Keypoints im normalen Bild frameMat
+        blobDetector->read("..\\blobdetectorparams1.xml");
+        vector<KeyPoint> keypoints;
+        blobDetector->detect(grayImage, keypoints);
+        
+        // Kreise malen
+        for(const KeyPoint& k: keypoints) {
+            circle(frameMat, k.pt, 30, cv::Scalar(0,0,0), 2);
         }
 
+        // Blob detection Ergebnis in RGB konvertieren (für die Darstellung)
+        cvtColor(grayImage, grayImage, COLOR_GRAY2BGR);
 
-        Mat matResult(Size(frameMat.cols*2,frameMat.rows),frameMat.type(),Scalar::all(0));
-        Mat processed = matResult(Rect(0,0,frameMat.cols, frameMat.rows));
-        frameMat.copyTo(processed);
-        processed = matResult(Rect(frameMat.cols,0,frameMat.cols, frameMat.rows));
-        grayImage.copyTo(processed);
+        // Edge detection pipeline
+        cvtColor(frameCopy, edges, COLOR_BGR2GRAY);
+        blur(edges, edges, Size(3,3));
+        Canny(edges, edges, 50, 150, 3);
+        
+        // Kopie des originalen Videos erstellen für ganz rechts
+        Mat edgesWithBackground = frameCopy.clone();
+        // edges in RGB konvertieren (für die Darstellung)
+        cvtColor(edges, edges, COLOR_GRAY2BGR);
 
-        imshow("Ein Farbvideo in ein Grauwertvideo umwandeln.", matResult);
+        Mat edgeMask;
+        threshold(edges, edgeMask, 0, 255, THRESH_BINARY);
+        // rote linien
+        edgesWithBackground.setTo(Scalar(0, 0, 255), edgeMask);
+
+        // Fenstergröße berechnen und Videos in Originalgröße anzeigen
+        double scale = 0.8; // Use 80% of screen width
+        int targetWidth = screenWidth * scale;
+        int targetHeight = (frameMat.rows * targetWidth) / (frameMat.cols * 3);
+        
+        // sicherstellen, dass die Höhe nicht über den Bildschirmrand hinaus geht
+        if (targetHeight > screenHeight * 0.8) {
+            targetHeight = screenHeight * 0.8;
+            targetWidth = (frameMat.cols * 3 * targetHeight) / frameMat.rows;
+        }
+
+        // Fenster erstellen mit den 3 Ergebnissen nebeneinander
+        Mat matResult(Size(frameMat.cols * 3, frameMat.rows), frameMat.type(), Scalar::all(0));
+        
+        // Original mit Kreisen
+        frameMat.copyTo(matResult(Rect(0, 0, frameMat.cols, frameMat.rows)));
+        // Blob detection Ergebnis
+        grayImage.copyTo(matResult(Rect(frameMat.cols, 0, frameMat.cols, frameMat.rows)));
+        // Edge detection Ergebnis
+        edgesWithBackground.copyTo(matResult(Rect(frameMat.cols * 2, 0, frameMat.cols, frameMat.rows)));
+
+        // Ergebnis resizen damit es auf Bildschirm passt und videos in Orignalgröße angezeigt werden
+        Mat resizedResult;
+        resize(matResult, resizedResult, Size(targetWidth, targetHeight));
+
+        imshow("Ein Farbvideo in ein Grauwertvideo umwandeln.", resizedResult);
         int key = waitKey(20); // Wait for a keystroke in the window
 
         // q, ESC, or close window with mouse will terminate the window

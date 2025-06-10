@@ -73,12 +73,12 @@
 			[
 				{
 					"backtrace" : 3,
-					"path" : "C:/Users/User/Desktop/VideoProcessingStartCode/include"
+					"path" : "D:/gotzes/Visual_Computing/include"
 				},
 				{
 					"backtrace" : 3,
 					"isSystem" : true,
-					"path" : "C:/opencv/opencv-411-mingw/install/include"
+					"path" : "C:/opencv-411-mingw/install/include"
 				}
 			],
 			"language" : "CXX",
@@ -107,42 +107,42 @@
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "C:\\opencv\\opencv-411-mingw\\install\\x64\\mingw\\lib\\libopencv_world4110.dll.a",
+				"fragment" : "C:\\opencv-411-mingw\\install\\x64\\mingw\\lib\\libopencv_world4110.dll.a",
 				"role" : "libraries"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "C:\\opencv\\opencv-411-mingw\\install\\x64\\mingw\\lib\\libopencv_world4110.dll.a",
+				"fragment" : "C:\\opencv-411-mingw\\install\\x64\\mingw\\lib\\libopencv_world4110.dll.a",
 				"role" : "libraries"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "C:\\opencv\\opencv-411-mingw\\install\\x64\\mingw\\lib\\libopencv_world4110.dll.a",
+				"fragment" : "C:\\opencv-411-mingw\\install\\x64\\mingw\\lib\\libopencv_world4110.dll.a",
 				"role" : "libraries"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "C:\\opencv\\opencv-411-mingw\\install\\x64\\mingw\\lib\\libopencv_world4110.dll.a",
+				"fragment" : "C:\\opencv-411-mingw\\install\\x64\\mingw\\lib\\libopencv_world4110.dll.a",
 				"role" : "libraries"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "C:\\opencv\\opencv-411-mingw\\install\\x64\\mingw\\lib\\libopencv_world4110.dll.a",
+				"fragment" : "C:\\opencv-411-mingw\\install\\x64\\mingw\\lib\\libopencv_world4110.dll.a",
 				"role" : "libraries"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "C:\\opencv\\opencv-411-mingw\\install\\x64\\mingw\\lib\\libopencv_world4110.dll.a",
+				"fragment" : "C:\\opencv-411-mingw\\install\\x64\\mingw\\lib\\libopencv_world4110.dll.a",
 				"role" : "libraries"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "C:\\opencv\\opencv-411-mingw\\install\\x64\\mingw\\lib\\libopencv_world4110.dll.a",
+				"fragment" : "C:\\opencv-411-mingw\\install\\x64\\mingw\\lib\\libopencv_world4110.dll.a",
 				"role" : "libraries"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "C:\\opencv\\opencv-411-mingw\\install\\x64\\mingw\\lib\\libopencv_world4110.dll.a",
+				"fragment" : "C:\\opencv-411-mingw\\install\\x64\\mingw\\lib\\libopencv_world4110.dll.a",
 				"role" : "libraries"
 			},
 			{

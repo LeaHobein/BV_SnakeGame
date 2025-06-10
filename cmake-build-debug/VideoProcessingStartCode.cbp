@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="VideoProcessingStartCode"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\opencv-411-mingw\;CMake Files\opencv-411-mingw\install\;CMake Files\opencv-411-mingw\install\x64\;CMake Files\opencv-411-mingw\install\x64\mingw\;CMake Files\opencv-411-mingw\install\x64\mingw\lib\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="D:/gotzes/Visual_Computing/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/msys64/ucrt64/bin/mingw32-make.exe -f &quot;D:/gotzes/Visual_Computing/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="C:/msys64/ucrt64/bin/mingw32-make.exe -f &quot;D:/gotzes/Visual_Computing/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/msys64/ucrt64/bin/mingw32-make.exe -f &quot;D:/gotzes/Visual_Computing/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/msys64/ucrt64/bin/mingw32-make.exe -f &quot;D:/gotzes/Visual_Computing/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="VideoProcessingStartCode">
+				<Option output="D:/gotzes/Visual_Computing/cmake-build-debug/VideoProcessingStartCode.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="D:/gotzes/Visual_Computing/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="D:/gotzes/Visual_Computing/include"/>
+					<Add directory="C:/opencv-411-mingw/install/include"/>
+					<Add directory="C:/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/../../../../include/c++/14.2.0"/>
+					<Add directory="C:/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/../../../../include/c++/14.2.0/x86_64-w64-mingw32"/>
+					<Add directory="C:/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/../../../../include/c++/14.2.0/backward"/>
+					<Add directory="C:/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/include"/>
+					<Add directory="C:/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/../../../../include"/>
+					<Add directory="C:/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/include-fixed"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/msys64/ucrt64/bin/mingw32-make.exe -f &quot;D:/gotzes/Visual_Computing/cmake-build-debug/Makefile&quot;  VERBOSE=1 VideoProcessingStartCode"/>
+					<CompileFile command="C:/msys64/ucrt64/bin/mingw32-make.exe -f &quot;D:/gotzes/Visual_Computing/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/msys64/ucrt64/bin/mingw32-make.exe -f &quot;D:/gotzes/Visual_Computing/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/msys64/ucrt64/bin/mingw32-make.exe -f &quot;D:/gotzes/Visual_Computing/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="VideoProcessingStartCode/fast">
+				<Option output="D:/gotzes/Visual_Computing/cmake-build-debug/VideoProcessingStartCode.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="D:/gotzes/Visual_Computing/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="D:/gotzes/Visual_Computing/include"/>
+					<Add directory="C:/opencv-411-mingw/install/include"/>
+					<Add directory="C:/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/../../../../include/c++/14.2.0"/>
+					<Add directory="C:/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/../../../../include/c++/14.2.0/x86_64-w64-mingw32"/>
+					<Add directory="C:/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/../../../../include/c++/14.2.0/backward"/>
+					<Add directory="C:/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/include"/>
+					<Add directory="C:/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/../../../../include"/>
+					<Add directory="C:/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/include-fixed"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/msys64/ucrt64/bin/mingw32-make.exe -f &quot;D:/gotzes/Visual_Computing/cmake-build-debug/Makefile&quot;  VERBOSE=1 VideoProcessingStartCode/fast"/>
+					<CompileFile command="C:/msys64/ucrt64/bin/mingw32-make.exe -f &quot;D:/gotzes/Visual_Computing/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/msys64/ucrt64/bin/mingw32-make.exe -f &quot;D:/gotzes/Visual_Computing/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/msys64/ucrt64/bin/mingw32-make.exe -f &quot;D:/gotzes/Visual_Computing/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="D:/gotzes/Visual_Computing/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/msys64/ucrt64/bin/mingw32-make.exe -f &quot;D:/gotzes/Visual_Computing/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="C:/msys64/ucrt64/bin/mingw32-make.exe -f &quot;D:/gotzes/Visual_Computing/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/msys64/ucrt64/bin/mingw32-make.exe -f &quot;D:/gotzes/Visual_Computing/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/msys64/ucrt64/bin/mingw32-make.exe -f &quot;D:/gotzes/Visual_Computing/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="D:/gotzes/Visual_Computing/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/msys64/ucrt64/bin/mingw32-make.exe -f &quot;D:/gotzes/Visual_Computing/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="C:/msys64/ucrt64/bin/mingw32-make.exe -f &quot;D:/gotzes/Visual_Computing/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/msys64/ucrt64/bin/mingw32-make.exe -f &quot;D:/gotzes/Visual_Computing/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/msys64/ucrt64/bin/mingw32-make.exe -f &quot;D:/gotzes/Visual_Computing/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="D:/gotzes/Visual_Computing/src/main.cpp">
+			<Option target="VideoProcessingStartCode"/>
+		</Unit>
+		<Unit filename="D:/gotzes/Visual_Computing/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="D:/gotzes/Visual_Computing/opencv-411-mingw/install/x64/mingw/lib/OpenCVConfig-version.cmake">
+			<Option virtualFolder="CMake Files\opencv-411-mingw\install\x64\mingw\lib\"/>
+		</Unit>
+		<Unit filename="D:/gotzes/Visual_Computing/opencv-411-mingw/install/x64/mingw/lib/OpenCVConfig.cmake">
+			<Option virtualFolder="CMake Files\opencv-411-mingw\install\x64\mingw\lib\"/>
+		</Unit>
+		<Unit filename="D:/gotzes/Visual_Computing/opencv-411-mingw/install/x64/mingw/lib/OpenCVModules-release.cmake">
+			<Option virtualFolder="CMake Files\opencv-411-mingw\install\x64\mingw\lib\"/>
+		</Unit>
+		<Unit filename="D:/gotzes/Visual_Computing/opencv-411-mingw/install/x64/mingw/lib/OpenCVModules.cmake">
+			<Option virtualFolder="CMake Files\opencv-411-mingw\install\x64\mingw\lib\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

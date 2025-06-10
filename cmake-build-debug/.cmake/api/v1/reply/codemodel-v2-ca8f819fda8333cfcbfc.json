@@ -39,7 +39,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "VideoProcessingStartCode::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-VideoProcessingStartCode-Debug-807df666501dc7de89d8.json",
+					"jsonFile" : "target-VideoProcessingStartCode-Debug-24244e3e44b3f12810f3.json",
 					"name" : "VideoProcessingStartCode",
 					"projectIndex" : 0
 				}
@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/User/Desktop/VideoProcessingStartCode/cmake-build-debug",
-		"source" : "C:/Users/User/Desktop/VideoProcessingStartCode"
+		"build" : "D:/gotzes/Visual_Computing/cmake-build-debug",
+		"source" : "D:/gotzes/Visual_Computing"
 	},
 	"version" : 
 	{
