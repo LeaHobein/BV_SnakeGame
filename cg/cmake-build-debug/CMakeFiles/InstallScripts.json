@@ -1,0 +1,17 @@
+{
+	"InstallScripts" : 
+	[
+		"C:/cgbv_project/Visual_Computing/cg/cmake-build-debug/cmake_install.cmake",
+		"C:/cgbv_project/Visual_Computing/cg/cmake-build-debug/external/glfw-3.4/cmake_install.cmake",
+		"C:/cgbv_project/Visual_Computing/cg/cmake-build-debug/external/glfw-3.4/src/cmake_install.cmake",
+		"C:/cgbv_project/Visual_Computing/cg/cmake-build-debug/external/glad/cmake_install.cmake",
+		"C:/cgbv_project/Visual_Computing/cg/cmake-build-debug/external/stb_image/cmake_install.cmake",
+		"C:/cgbv_project/Visual_Computing/cg/cmake-build-debug/external/assimp/cmake_install.cmake",
+		"C:/cgbv_project/Visual_Computing/cg/cmake-build-debug/external/assimp/contrib/zlib/cmake_install.cmake",
+		"C:/cgbv_project/Visual_Computing/cg/cmake-build-debug/external/assimp/code/cmake_install.cmake",
+		"C:/cgbv_project/Visual_Computing/cg/cmake-build-debug/external/assimp/test/cmake_install.cmake",
+		"C:/cgbv_project/Visual_Computing/cg/cmake-build-debug/external/assimp/test/headercheck/cmake_install.cmake",
+		"C:/cgbv_project/Visual_Computing/cg/cmake-build-debug/external/glm/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
