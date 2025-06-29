@@ -25,7 +25,9 @@ add_subdirectory(external/glm)				# math
 # located at directory src/
 file(GLOB_RECURSE MY_SOURCE_FILES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 
-add_executable("${CMAKE_PROJECT_NAME}" include/GameRenderer.h include/GameMainWindow.h)
+add_executable("${CMAKE_PROJECT_NAME}" include/GameRenderer.h include/GameMainWindow.h
+        include/Grid.h
+		src/Grid.cpp)
 
 set_property(TARGET "${CMAKE_PROJECT_NAME}" PROPERTY CXX_STANDARD 23)
 

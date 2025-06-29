@@ -14,6 +14,11 @@
 
 #include "GameMainWindow.h"
 #include "InteractionHandler.h"
+//Grid:
+#include <iostream>
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+#include "Grid.h"
 
 GameMainWindow::GameMainWindow() = default;
 GameMainWindow::~GameMainWindow() = default;
@@ -110,6 +115,12 @@ int main() {
 
     //TODO: Capture input devices: keyboard, mouse, controller aso.
     rend.init();
+
+
+    // Grid erzeugen
+    Grid grid(10, 10, 1.0f); // 10x10 Zellen, jede 1x1 groß
+    rend.setGrid(&grid);
+
     //Loop until the user closes the window (GLFW)
     while (!glfwWindowShouldClose(window)) {
         glfwGetCursorPos(window, &xpos, &ypos);

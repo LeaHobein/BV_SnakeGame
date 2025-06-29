@@ -14,6 +14,8 @@
 #include "LightSource.h"
 #include "Material.h"
 #include "Model.h"
+#include "Grid.h"
+
 
 
 #include <iostream>
@@ -29,6 +31,7 @@ public:
     void display(GLFWwindow* window);
     void reshape(GLFWwindow* window);
     void dispose();
+    void setGrid(Grid* g) { grid = g; }
 
 
 private:
@@ -74,6 +77,8 @@ private:
 
     glm::mat4x4 modelviewMat;
     glm::mat4x4 projMat;
+
+    Grid* grid = nullptr;
 };
 
 

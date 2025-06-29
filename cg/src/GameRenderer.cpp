@@ -7,6 +7,10 @@
 #include "GameRenderer.h"
 #include "InteractionHandler.h"
 
+//Grid
+#include "Grid.h"
+
+
 GameRenderer::GameRenderer(){ //= default;
     modelviewMat = glm::mat4x4 (1.0f);
     projMat = glm::mat4x4 (1.0f);
@@ -335,6 +339,14 @@ void GameRenderer::display(GLFWwindow* window) {
 
     displayObject0(lightPos);
     displayObject1(lightPos);
+
+    if (grid != nullptr) {
+        glBindVertexArray(grid->getVAO());
+        //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // Wireframe zum testen
+        glDrawElements(GL_TRIANGLES, grid->getIndexCount(), GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
+    }
+
 
 }
 
