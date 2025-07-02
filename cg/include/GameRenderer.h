@@ -19,6 +19,7 @@
 #include "Box.h"
 #include "Cone.h"
 #include "Roof.h"
+#include "Pyramid.h"
 
 
 
@@ -53,6 +54,8 @@ private:
     inline static const char *TEXTURE_FILE_NAME0 = "apple_tex.jpg";
     inline static const char *BANANA_TEXTURE_PATH = "../resources/banana/";
     inline static const char *BANANA_TEXTURE_FILE_NAME0 = "banana_tex.jpg";
+    inline static const char *SNAKE_TEXTURE_PATH = "../resources/";
+    inline static const char *SNAKE_TEXTURE_FILE_NAME0 = "SchlangeTextur.jpeg";
     // inline static const char *TEXTURE_FILE_NAME0 = "HSHLLogo2.jpg";
 
     //.vert & .frag für Shapes
@@ -86,6 +89,7 @@ private:
     ShaderProgram shaderProgramB;
     ShaderProgram shaderProgram2;
     ShaderProgram shaderProgram3;
+    ShaderProgram shaderProgramP;
 
     void initObject0();
     void initObject1();
@@ -102,12 +106,13 @@ private:
     void initRoof();
     void initField();
     void initBall();
+    void initPyramid();
 
     void displayObject0(float* LightPosition);
     void displayObject1(float* LightPosition);
     //display für Shapes
     void displayObjectA();
-    void displayObjectB();
+    void displayObjectB(float time);
     void displayObject2();
     void displayObject3();
     void displayObject4();
@@ -120,6 +125,8 @@ private:
     void serialHouse(float z, int a);
     void displayField();
     void displayBall(float time);
+    void displaySnake(float z, int a, float time);
+    void displayPyramid();
 
     // Create box for the scene
     //inline static BoxTex box0;
@@ -140,6 +147,7 @@ private:
     inline static Roof roof;
     inline static Box field;
     inline static Sphere ball;
+    inline static Pyramid pyramid;
 
     glm::mat4x4 modelviewMat;
     glm::mat4x4 projMat;

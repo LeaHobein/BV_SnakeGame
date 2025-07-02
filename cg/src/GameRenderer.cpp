@@ -22,7 +22,7 @@ GameRenderer::~GameRenderer() = default;
 void GameRenderer::init() {
     // BEGIN: Preparing scene
     // BEGIN: Allocating vertex array objects and buffers for each object
-    GLsizei numbOfObjects = 14;
+    GLsizei numbOfObjects = 15;
     // create vertex array objects for noOfObjects objects (VAO)
     vertex_array_object = new GLuint[numbOfObjects];
     glGenVertexArrays(numbOfObjects, vertex_array_object);
@@ -43,6 +43,7 @@ void GameRenderer::init() {
     // END: Allocating vertex array objects and buffers for each object
 
     // Initialize objects to be drawn (see respective sub-methods)
+    //initPyramid();
     initObject0();
     initObject1();
     //inits für Shapes
@@ -58,6 +59,7 @@ void GameRenderer::init() {
     initRoof();
     initField();
     initBall();
+
 
     // Specify light parameters
     GLfloat lightPosition[4] = {0.0f, 3.0f, 3.0f, 1.0f};
@@ -172,6 +174,7 @@ void GameRenderer::initObject1(){
     }
     cout<<texturePathAndFileName2<<endl;
     // Activate and use texture as 2D texture (might have to go to "display()")
+    glDisable(GL_TEXTURE_2D);
     glGenTextures(2, &textureID);
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, textureID);
@@ -284,6 +287,7 @@ void GameRenderer::initObject0() {
     }
     cout<<texturePathAndFileName<<endl;
     // Activate and use texture as 2D texture (might have to go to "display()")
+    glDisable(GL_TEXTURE_2D);
     glGenTextures(2, &textureID);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textureID);
@@ -351,9 +355,9 @@ void GameRenderer::initObjectB() {
                                               const_cast<char *>(VERTEX_SHADER_FILE_NAMEb),
                                               const_cast<char *>(FRAGMENT_SHADER_FILE_NAMEb));
 
-    GLfloat color1[3] = {0.1f, 0.1f, 0.8f};
+    GLfloat color1[3] = {0.1f, 0.8f, 0.2f};
     box0 = Box();
-    GLfloat* cubeVertices = box0.makeBoxVertices( 0.8f,  0.5f, 0.4f, color1);
+    GLfloat* cubeVertices = box0.makeBoxVertices( 0.5f,  0.5f, 0.5f, color1);
     GLint* cubeIndices = box0.makeBoxIndicesForTriangleStrip();
 
     // activate and initialize vertex buffer object (VBO)
@@ -793,7 +797,46 @@ void GameRenderer::initBall(){
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(ballVertices[0]), (void*) (6 * sizeof(ballVertices[0])));
     // END: Prepare sphere for drawing
 }
+void GameRenderer::initPyramid() {
+    glBindVertexArray(vertex_array_object[14]);
+    shaderProgramP = ShaderProgram();
+    shaderProgramP.loadShaderAndCreateProgram(const_cast<char *>(SHADER_PATH),
+                                              const_cast<char *>(VERTEX_SHADER_FILE_NAMEb),
+                                              const_cast<char *>(FRAGMENT_SHADER_FILE_NAMEb));
 
+    GLfloat color1[3] = {0.1f, 0.8f, 0.2f};
+    pyramid = Pyramid();
+    GLfloat* pyramidVertices = pyramid.makePyramidVertices( 2,  2, 2, color1);
+    GLint* pyramidIndices = pyramid.makePyramidIndices();
+
+    // activate and initialize vertex buffer object (VBO)
+    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer[14]);
+    // floats use 4 bytes in Java
+    glBufferData(GL_ARRAY_BUFFER, (GLsizei) (pyramid.getNoOfVerticesForPyramid() * sizeof(pyramidVertices[0])),
+                 pyramidVertices, GL_STATIC_DRAW);
+
+    // activate and initialize index buffer object (IBO)
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_object[14]);
+    // integers use 4 bytes
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, (GLsizei) (pyramid.getNoOfIndicesForPyramid() * sizeof(pyramidIndices[0])),
+                 pyramidIndices, GL_STATIC_DRAW);
+
+    // Activate and order vertex buffer object data for the vertex shader
+    // The vertex buffer contains: position (3), color (3), normals (3)
+    // Defining input for vertex shader
+    // Pointer for the vertex shader to the position information per vertex
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(pyramidVertices[0]), nullptr);
+    // Pointer for the vertex shader to the color information per vertex
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(pyramidVertices[0]),
+                          (void *) (3 * sizeof(pyramidVertices[0])));
+    // Pointer for the vertex shader to the normal information per vertex
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(pyramidVertices[0]),
+                          (void *) (6 * sizeof(pyramidVertices[0])));
+    // END: Prepare cube for drawing
+}
 
 void GameRenderer::display(GLFWwindow* window) {
 
@@ -846,7 +889,6 @@ void GameRenderer::display(GLFWwindow* window) {
     displayObject1(lightPos);
     //displays für Shapes
     //displayObjectA();
-    //displayObjectB();
     //displayObject2();
     //displayObject3();
     //displayObject4();
@@ -855,6 +897,7 @@ void GameRenderer::display(GLFWwindow* window) {
     //displayIce();
     //serialHouse(0.6f, 5);
     displayField();
+    //displayPyramid();
 
     if (grid != nullptr) {
         glBindVertexArray(grid->getVAO());
@@ -864,7 +907,9 @@ void GameRenderer::display(GLFWwindow* window) {
     }
 
     float time = glfwGetTime();
-    displayBall(time);
+    displayObjectB(time);
+    //displaySnake(0.6f, 6, time);
+    //displayBall(time);
 
 
 }
@@ -969,7 +1014,7 @@ void GameRenderer::displayObjectA(){
     glDrawElements(GL_TRIANGLE_STRIP, sphere0.getNoOfIndices(), GL_UNSIGNED_INT, nullptr);
 }
 
-void GameRenderer::displayObjectB(){
+void GameRenderer::displayObjectB(float time){
 
     // Get a handle for our "MV" and "MVP" uniform
     // Only during the initialisation
@@ -980,14 +1025,93 @@ void GameRenderer::displayObjectB(){
     glUseProgram(shaderProgramB.getShaderProgramID());
 
     glm::mat4x4  model(1.0f);
-    model = glm::translate(modelviewMat, glm::vec3(0.0f, 1.5f, 0.0f));
-    model = glm::rotate(model, glm::radians(45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
+    float timerZa;
+    float timerZb;
+    float goZa;
+    float goZb;
+    float goX;
+    float timerX;
+    float slitherX;
+    float slitherZ;
+    float scaleZ;
+
+    if(time < 10.0f){
+        slitherX = sin(time*6) * 0.1f;
+        timerZa = time;
+        scaleZ = 1;
+        if(time = 0.0f){goZa = 0.0f;}
+        goZa = timerZa * 0.6f;
+        if(goZa >= 4.0f){goZa = 4.0f;}
+    }
+    if(time > 10.0f && time < 15.0f){
+        slitherZ = sin(time*6) * 0.1f;
+        goZa = 4.0f;
+        timerX = time - 10.0f;
+        scaleZ = 2;
+        if(time = 10.0f){goX = 0.0f;}
+        goX = timerX * 0.6f;
+        if(goX >= 2.0f){goX = 2.0f;}
+    }
+    if(time > 15.0f && time < 25.0f){
+        slitherX = sin(time*6) * 0.1f;
+        goZa = 4.0f;
+        goX = 2.0f;
+        timerZb = time - 15.0f;
+        scaleZ = 3;
+        if(time = 15.0f){goZb = 0.0f;}
+        goZb = timerZb * 0.6f;
+        if(goZb >= 4.0f){goZb = 4.0f;}
+    }
+    if(time > 15.0f){
+        slitherX = sin(time*6) * 0.1f;
+        goZa = 4.0f;
+        goZb = 4.0f;
+        goX = 2.0f;
+        scaleZ = 4;
+    }
+
+
+    model = glm::translate(modelviewMat, glm::vec3(
+        0.0f + slitherX + goX,
+        0.0f + 0.25f,
+        4 + slitherZ - goZa - goZb));
+    //model = glm::rotate(model, glm::radians(45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    model = glm::scale(model, glm::vec3(1, 1, scaleZ));
 
     glUniformMatrix4fv(mp_location, 1, GL_FALSE, &projMat[0][0]);
     glUniformMatrix4fv(mv_location, 1, GL_FALSE, &model[0][0]);
     glBindVertexArray(vertex_array_object[13]);
     // Draws the elements in the order defined by the index buffer object (IBO)
     glDrawElements(GL_TRIANGLE_STRIP, box0.getNoOfIndicesForBox(), GL_UNSIGNED_INT, nullptr);
+}
+
+void GameRenderer::displayPyramid(){
+
+    // Get a handle for our "MV" and "MVP" uniform
+    // Only during the initialisation
+    GLint mp_location = glGetUniformLocation(shaderProgramP.getShaderProgramID(), "projectionMatrix");
+    GLint mv_location = glGetUniformLocation(shaderProgramP.getShaderProgramID(), "modelviewMatrix");
+
+    //glBindVertexArray(vertex_array_object);
+    glUseProgram(shaderProgramP.getShaderProgramID());
+
+    glm::mat4x4  model(1.0f);
+
+
+    /*model = glm::translate(modelviewMat, glm::vec3(
+        0.0f + slitherX + goX,
+        0.0f + 0.25f,
+        4 + slitherZ - goZa - goZb));*/
+    model = glm::translate(modelviewMat, glm::vec3(0.0f,1.1f,0.0f));
+    //model = glm::rotate(model, glm::radians(45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    //model = glm::scale(model, glm::vec3(1, 1, scaleZ));
+
+    glUniformMatrix4fv(mp_location, 1, GL_FALSE, &projMat[0][0]);
+    glUniformMatrix4fv(mv_location, 1, GL_FALSE, &model[0][0]);
+    glBindVertexArray(vertex_array_object[14]);
+    // Draws the elements in the order defined by the index buffer object (IBO)
+    glDrawElements(GL_TRIANGLE_STRIP, pyramid.getNoOfIndicesForPyramid(), GL_UNSIGNED_INT, nullptr);
 }
 
 void GameRenderer::displayObject2(){
@@ -1239,6 +1363,11 @@ void GameRenderer::displayBall(float time){
     glDrawElements(GL_TRIANGLE_STRIP, ball.getNoOfIndices(), GL_UNSIGNED_INT, nullptr);
 }
 
+void::GameRenderer::displaySnake(float z, int a, float time) {
+    /*for (int i=0; i<a; i++) {
+       displayObjectB(i * z, time);
+    }*/
+}
 
 void GameRenderer::reshape(GLFWwindow* window) {
     display(window);
