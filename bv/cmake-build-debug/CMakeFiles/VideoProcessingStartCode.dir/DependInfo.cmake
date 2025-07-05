@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "D:/gotzes/Visual_Computing/src/main.cpp" "CMakeFiles/VideoProcessingStartCode.dir/src/main.cpp.obj" "gcc" "CMakeFiles/VideoProcessingStartCode.dir/src/main.cpp.obj.d"
+  "D:/gotzes/Visual_Computing/bv/src/main.cpp" "CMakeFiles/VideoProcessingStartCode.dir/src/main.cpp.obj" "gcc" "CMakeFiles/VideoProcessingStartCode.dir/src/main.cpp.obj.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

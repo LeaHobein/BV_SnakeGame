@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "d:/gotzes/Visual_Computing/cmake-build-debug"
+			"value" : "d:/gotzes/Visual_Computing/bv/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -643,7 +643,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "D:/gotzes/Visual_Computing/cmake-build-debug/CMakeFiles/pkgRedirects"
+			"value" : "D:/gotzes/Visual_Computing/bv/cmake-build-debug/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -715,7 +715,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "D:/gotzes/Visual_Computing"
+			"value" : "D:/gotzes/Visual_Computing/bv"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -1387,7 +1387,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "D:/gotzes/Visual_Computing/cmake-build-debug"
+			"value" : "D:/gotzes/Visual_Computing/bv/cmake-build-debug"
 		},
 		{
 			"name" : "VideoProcessingStartCode_IS_TOP_LEVEL",
@@ -1411,7 +1411,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "D:/gotzes/Visual_Computing"
+			"value" : "D:/gotzes/Visual_Computing/bv"
 		}
 	],
 	"kind" : "cache",

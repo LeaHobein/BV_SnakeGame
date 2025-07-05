@@ -55,7 +55,7 @@ int main()
 
         // --- Edge and Line Detection ---
         Mat frameCopy = frameMat.clone();
-        detectAndDrawEdgesAndLines(frameCopy, cannyAndHough);
+        detectAndDrawEdgesAndLines(frameCopy, grayImage, cannyAndHough);
 
         // --- Result Panels ---
         Mat matResult;
