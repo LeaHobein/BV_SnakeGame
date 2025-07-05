@@ -1,0 +1,43 @@
+file(REMOVE_RECURSE
+  "CGSnakeGame.exe"
+  "CGSnakeGame.exe.manifest"
+  "CGSnakeGame.pdb"
+  "CMakeFiles/CGSnakeGame.dir/src/Box.cpp.obj"
+  "CMakeFiles/CGSnakeGame.dir/src/Box.cpp.obj.d"
+  "CMakeFiles/CGSnakeGame.dir/src/BoxTex.cpp.obj"
+  "CMakeFiles/CGSnakeGame.dir/src/BoxTex.cpp.obj.d"
+  "CMakeFiles/CGSnakeGame.dir/src/Cone.cpp.obj"
+  "CMakeFiles/CGSnakeGame.dir/src/Cone.cpp.obj.d"
+  "CMakeFiles/CGSnakeGame.dir/src/GameMainWindow.cpp.obj"
+  "CMakeFiles/CGSnakeGame.dir/src/GameMainWindow.cpp.obj.d"
+  "CMakeFiles/CGSnakeGame.dir/src/GameRenderer.cpp.obj"
+  "CMakeFiles/CGSnakeGame.dir/src/GameRenderer.cpp.obj.d"
+  "CMakeFiles/CGSnakeGame.dir/src/Grid.cpp.obj"
+  "CMakeFiles/CGSnakeGame.dir/src/Grid.cpp.obj.d"
+  "CMakeFiles/CGSnakeGame.dir/src/InteractionHandler.cpp.obj"
+  "CMakeFiles/CGSnakeGame.dir/src/InteractionHandler.cpp.obj.d"
+  "CMakeFiles/CGSnakeGame.dir/src/LightSource.cpp.obj"
+  "CMakeFiles/CGSnakeGame.dir/src/LightSource.cpp.obj.d"
+  "CMakeFiles/CGSnakeGame.dir/src/Material.cpp.obj"
+  "CMakeFiles/CGSnakeGame.dir/src/Material.cpp.obj.d"
+  "CMakeFiles/CGSnakeGame.dir/src/Mesh.cpp.obj"
+  "CMakeFiles/CGSnakeGame.dir/src/Mesh.cpp.obj.d"
+  "CMakeFiles/CGSnakeGame.dir/src/Model.cpp.obj"
+  "CMakeFiles/CGSnakeGame.dir/src/Model.cpp.obj.d"
+  "CMakeFiles/CGSnakeGame.dir/src/Pyramid.cpp.obj"
+  "CMakeFiles/CGSnakeGame.dir/src/Pyramid.cpp.obj.d"
+  "CMakeFiles/CGSnakeGame.dir/src/Roof.cpp.obj"
+  "CMakeFiles/CGSnakeGame.dir/src/Roof.cpp.obj.d"
+  "CMakeFiles/CGSnakeGame.dir/src/ShaderProgram.cpp.obj"
+  "CMakeFiles/CGSnakeGame.dir/src/ShaderProgram.cpp.obj.d"
+  "CMakeFiles/CGSnakeGame.dir/src/Sphere.cpp.obj"
+  "CMakeFiles/CGSnakeGame.dir/src/Sphere.cpp.obj.d"
+  "CMakeFiles/CGSnakeGame.dir/src/Sphere2.cpp.obj"
+  "CMakeFiles/CGSnakeGame.dir/src/Sphere2.cpp.obj.d"
+  "libCGSnakeGame.dll.a"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/CGSnakeGame.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

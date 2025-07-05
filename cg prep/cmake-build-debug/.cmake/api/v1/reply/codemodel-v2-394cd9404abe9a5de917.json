@@ -1,0 +1,368 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						3,
+						4,
+						5,
+						10
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.27"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				},
+				{
+					"build" : "external/glfw-3.4",
+					"childIndexes" : 
+					[
+						2
+					],
+					"jsonFile" : "directory-external.glfw-3.4-Debug-76ec8d16445ab68dd1fc.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.4"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 1,
+					"source" : "external/glfw-3.4"
+				},
+				{
+					"build" : "external/glfw-3.4/src",
+					"jsonFile" : "directory-external.glfw-3.4.src-Debug-d0905afb4cb9d689eb03.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.4"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 1,
+					"source" : "external/glfw-3.4/src",
+					"targetIndexes" : 
+					[
+						3,
+						7
+					]
+				},
+				{
+					"build" : "external/glad",
+					"jsonFile" : "directory-external.glad-Debug-fe552af5a86a4942293e.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.27"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 2,
+					"source" : "external/glad",
+					"targetIndexes" : 
+					[
+						2
+					]
+				},
+				{
+					"build" : "external/stb_image",
+					"jsonFile" : "directory-external.stb_image-Debug-22e4301351593e9d71bc.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.27"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 3,
+					"source" : "external/stb_image",
+					"targetIndexes" : 
+					[
+						4
+					]
+				},
+				{
+					"build" : "external/assimp",
+					"childIndexes" : 
+					[
+						6,
+						7,
+						8
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-external.assimp-Debug-9f97d24edcd57c13ad90.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.22"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 4,
+					"source" : "external/assimp",
+					"targetIndexes" : 
+					[
+						5
+					]
+				},
+				{
+					"build" : "external/assimp/contrib/zlib",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-external.assimp.contrib.zlib-Debug-c1407d3a1e8caaa5b9e5.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10.0"
+					},
+					"parentIndex" : 5,
+					"projectIndex" : 5,
+					"source" : "external/assimp/contrib/zlib",
+					"targetIndexes" : 
+					[
+						8
+					]
+				},
+				{
+					"build" : "external/assimp/code",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-external.assimp.code-Debug-258e81b04563a257f997.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.22"
+					},
+					"parentIndex" : 5,
+					"projectIndex" : 4,
+					"source" : "external/assimp/code",
+					"targetIndexes" : 
+					[
+						1
+					]
+				},
+				{
+					"build" : "external/assimp/test",
+					"childIndexes" : 
+					[
+						9
+					],
+					"jsonFile" : "directory-external.assimp.test-Debug-a0340422778f347c3409.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 5,
+					"projectIndex" : 4,
+					"source" : "external/assimp/test",
+					"targetIndexes" : 
+					[
+						6
+					]
+				},
+				{
+					"build" : "external/assimp/test/headercheck",
+					"jsonFile" : "directory-external.assimp.test.headercheck-Debug-8e829f56cdb3100ec04c.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 8,
+					"projectIndex" : 4,
+					"source" : "external/assimp/test/headercheck"
+				},
+				{
+					"build" : "external/glm",
+					"jsonFile" : "directory-external.glm-Debug-c35beecffdababf19b76.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.27"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 6,
+					"source" : "external/glm"
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1,
+						2,
+						3,
+						4,
+						6
+					],
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "CGSnakeGame",
+					"targetIndexes" : 
+					[
+						0
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						1,
+						2
+					],
+					"name" : "GLFW",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						3,
+						7
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						3
+					],
+					"name" : "glad",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						2
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						4
+					],
+					"name" : "stb_image",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						4
+					]
+				},
+				{
+					"childIndexes" : 
+					[
+						5
+					],
+					"directoryIndexes" : 
+					[
+						5,
+						7,
+						8,
+						9
+					],
+					"name" : "Assimp",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						1,
+						5,
+						6
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						6
+					],
+					"name" : "zlib",
+					"parentIndex" : 4,
+					"targetIndexes" : 
+					[
+						8
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						10
+					],
+					"name" : "glm",
+					"parentIndex" : 0
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "CGSnakeGame::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-CGSnakeGame-Debug-e1f2a3e97fb0165d6c85.json",
+					"name" : "CGSnakeGame",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 7,
+					"id" : "assimp::@f3a6284ec5dbac1d6aa0",
+					"jsonFile" : "target-assimp-Debug-4a48093dc1a02b240047.json",
+					"name" : "assimp",
+					"projectIndex" : 4
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "glad::@55512df44c152ef9a2ca",
+					"jsonFile" : "target-glad-Debug-d324e4e5dbeb353084f3.json",
+					"name" : "glad",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "glfw::@d2ad0d204de8827945e5",
+					"jsonFile" : "target-glfw-Debug-5f1744b8e8ec524b8a68.json",
+					"name" : "glfw",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "stb_image::@4945d4a35979c2c9c488",
+					"jsonFile" : "target-stb_image-Debug-5093883a0334fd4b73a2.json",
+					"name" : "stb_image",
+					"projectIndex" : 3
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "uninstall::@3253ab71256c6811a023",
+					"jsonFile" : "target-uninstall-Debug-5b36d1607f6b20d03eef.json",
+					"name" : "uninstall",
+					"projectIndex" : 4
+				},
+				{
+					"directoryIndex" : 8,
+					"id" : "unit::@fef23bd2ce31f13f63ea",
+					"jsonFile" : "target-unit-Debug-8d648badf1ac78ef18c7.json",
+					"name" : "unit",
+					"projectIndex" : 4
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "update_mappings::@d2ad0d204de8827945e5",
+					"jsonFile" : "target-update_mappings-Debug-ee7ee33ac2289f1c0cf0.json",
+					"name" : "update_mappings",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 6,
+					"id" : "zlibstatic::@20be5c410eca5ac1f929",
+					"jsonFile" : "target-zlibstatic-Debug-db2172c1acc67b601c0d.json",
+					"name" : "zlibstatic",
+					"projectIndex" : 5
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Bildverarbeitung Computergrafik/git alle objekte zsm/Visual_Computing/cg/cmake-build-debug",
+		"source" : "C:/Bildverarbeitung Computergrafik/git alle objekte zsm/Visual_Computing/cg"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 8
+	}
+}
