@@ -120,7 +120,6 @@ int main() {
     // Grid erzeugen
     Grid grid(10, 10, 1.0f); // 10x10 Zellen, jede 1x1 groß
     rend.setGrid(&grid);
-
     //Loop until the user closes the window (GLFW)
     while (!glfwWindowShouldClose(window)) {
         glfwGetCursorPos(window, &xpos, &ypos);

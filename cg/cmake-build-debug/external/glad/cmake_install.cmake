@@ -1,4 +1,4 @@
-# Install script for directory: C:/cgbv_project/Visual_Computing/cg/external/glad
+# Install script for directory: C:/Bildverarbeitung Computergrafik/git alle objekte zsm/Visual_Computing/cg/external/glad
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,6 +40,6 @@ endif()
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 if(CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "C:/cgbv_project/Visual_Computing/cg/cmake-build-debug/external/glad/install_local_manifest.txt"
+  file(WRITE "C:/Bildverarbeitung Computergrafik/git alle objekte zsm/Visual_Computing/cg/cmake-build-debug/external/glad/install_local_manifest.txt"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

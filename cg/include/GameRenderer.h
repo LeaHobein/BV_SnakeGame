@@ -98,13 +98,6 @@ private:
     void initObjectB();
     void initObject2();
     void initObject3();
-    void initObject4();
-    void initObject5();
-    void initCony();
-    void initIce();
-    void initCube();
-    void initRoof();
-    void initField();
     void initBall();
     void initPyramid();
 
@@ -115,18 +108,10 @@ private:
     void displayObjectB(float time);
     void displayObject2();
     void displayObject3();
-    void displayObject4();
-    void displayObject5();
-    void displayCony();
-    void displayIce();
-    void displayHouse(float z);
-    void displayCube(glm::mat4x4 m);
-    void displayRoof(glm::mat4x4 m);
-    void serialHouse(float z, int a);
-    void displayField();
     void displayBall(float time);
     void displaySnake(float z, int a, float time);
     void displayPyramid();
+
 
     // Create box for the scene
     //inline static BoxTex box0;
@@ -137,17 +122,14 @@ private:
     inline static Box box0;
     inline static Cone cone0;
     inline static Roof roof0;
-    inline static Cone treelog;
-    inline static Cone treecrown;
-    inline static Cone baumstamm;
-    inline static Sphere baumkrone;
-    inline static Cone cony;
-    inline static Sphere ice;
-    inline static Box cube;
-    inline static Roof roof;
-    inline static Box field;
     inline static Sphere ball;
     inline static Pyramid pyramid;
+
+
+
+    inline static GLuint appleTextureID;
+    inline static GLuint bananaTextureID;
+    inline static GLuint snakeTextureID;
 
     glm::mat4x4 modelviewMat;
     glm::mat4x4 projMat;

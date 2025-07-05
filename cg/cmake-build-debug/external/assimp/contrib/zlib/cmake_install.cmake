@@ -1,4 +1,4 @@
-# Install script for directory: C:/cgbv_project/Visual_Computing/cg/external/assimp/contrib/zlib
+# Install script for directory: C:/Bildverarbeitung Computergrafik/git alle objekte zsm/Visual_Computing/cg/external/assimp/contrib/zlib
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -38,12 +38,12 @@ if(NOT DEFINED CMAKE_OBJDUMP)
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "C:/cgbv_project/Visual_Computing/cg/cmake-build-debug/external/assimp/contrib/zlib/libzlibstaticd.a")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "C:/Bildverarbeitung Computergrafik/git alle objekte zsm/Visual_Computing/cg/cmake-build-debug/external/assimp/contrib/zlib/libzlibstaticd.a")
 endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 if(CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "C:/cgbv_project/Visual_Computing/cg/cmake-build-debug/external/assimp/contrib/zlib/install_local_manifest.txt"
+  file(WRITE "C:/Bildverarbeitung Computergrafik/git alle objekte zsm/Visual_Computing/cg/cmake-build-debug/external/assimp/contrib/zlib/install_local_manifest.txt"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

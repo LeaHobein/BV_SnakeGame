@@ -34,7 +34,9 @@ public:
     Box();
     ~Box();
 
+
     GLfloat* makeFastBoxVertices(GLfloat width, GLfloat height, GLfloat depth, GLfloat* color);
+    GLfloat* makeBoxVerticesWithTex(GLfloat width, GLfloat height, GLfloat depth);
 
     /**
      * Creates fourteen indices for drawing a cuboid (box) with glDrawElements().

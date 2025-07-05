@@ -320,3 +320,45 @@ GLint Box::getNoOfVerticesForBox(){
         return 28;
     }
 
+    GLfloat* Box::makeBoxVerticesWithTex(GLfloat width, GLfloat height, GLfloat depth) {
+    GLfloat halfOfWidth = width / 2;
+    GLfloat halfOfHeight = height / 2;
+    GLfloat halfOfDepth = depth / 2;
+
+    GLfloat p0[3] = {-halfOfWidth, +halfOfHeight, +halfOfDepth}; GLfloat p1[3] = {+halfOfWidth, +halfOfHeight, +halfOfDepth}; GLfloat p2[3] = {+halfOfWidth, -halfOfHeight, +halfOfDepth}; GLfloat p3[3] = {-halfOfWidth, -halfOfHeight, +halfOfDepth};
+    GLfloat p4[3] = {-halfOfWidth, +halfOfHeight, -halfOfDepth}; GLfloat p5[3] = {+halfOfWidth, +halfOfHeight, -halfOfDepth}; GLfloat p6[3] = {+halfOfWidth, -halfOfHeight, -halfOfDepth}; GLfloat p7[3]= {-halfOfWidth, -halfOfHeight, -halfOfDepth};
+
+    GLfloat nf[3] = { 0,  0,  1}; GLfloat nb[3] = { 0,  0, -1}; GLfloat nl[3] = {-1,  0,  0};
+    GLfloat nr[3] = { 1,  0,  0}; GLfloat nu[3] = { 0,  1,  0}; GLfloat nd[3] = { 0, -1,  0};
+
+    GLfloat t0[2] = {0.0f, 1.0f}; GLfloat t1[2] = {0.0f, 0.0f}; GLfloat t2[2] = {1.0f, 1.0f}; GLfloat t3[2] = {1.0f, 0.0f};
+
+    static GLfloat vertices[192] = {
+        p0[0], p0[1], p0[2],   nf[0], nf[1], nf[2],   t0[0], t0[1],
+        p3[0], p3[1], p3[2],   nf[0], nf[1], nf[2],   t1[0], t1[1],
+        p1[0], p1[1], p1[2],   nf[0], nf[1], nf[2],   t2[0], t2[1],
+        p2[0], p2[1], p2[2],   nf[0], nf[1], nf[2],   t3[0], t3[1],
+        p5[0], p5[1], p5[2],   nb[0], nb[1], nb[2],   t0[0], t0[1],
+        p6[0], p6[1], p6[2],   nb[0], nb[1], nb[2],   t1[0], t1[1],
+        p4[0], p4[1], p4[2],   nb[0], nb[1], nb[2],   t2[0], t2[1],
+        p7[0], p7[1], p7[2],   nb[0], nb[1], nb[2],   t3[0], t3[1],
+        p4[0], p4[1], p4[2],   nl[0], nl[1], nl[2],   t0[0], t0[1],
+        p7[0], p7[1], p7[2],   nl[0], nl[1], nl[2],   t1[0], t1[1],
+        p0[0], p0[1], p0[2],   nl[0], nl[1], nl[2],   t2[0], t2[1],
+        p3[0], p3[1], p3[2],   nl[0], nl[1], nl[2],   t3[0], t3[1],
+        p1[0], p1[1], p1[2],   nr[0], nr[1], nr[2],   t0[0], t0[1],
+        p2[0], p2[1], p2[2],   nr[0], nr[1], nr[2],   t1[0], t1[1],
+        p5[0], p5[1], p5[2],   nr[0], nr[1], nr[2],   t2[0], t2[1],
+        p6[0], p6[1], p6[2],   nr[0], nr[1], nr[2],   t3[0], t3[1],
+        p4[0], p4[1], p4[2],   nu[0], nu[1], nu[2],   t0[0], t0[1],
+        p0[0], p0[1], p0[2],   nu[0], nu[1], nu[2],   t1[0], t1[1],
+        p5[0], p5[1], p5[2],   nu[0], nu[1], nu[2],   t2[0], t2[1],
+        p1[0], p1[1], p1[2],   nu[0], nu[1], nu[2],   t3[0], t3[1],
+        p3[0], p3[1], p3[2],   nd[0], nd[1], nd[2],   t0[0], t0[1],
+        p7[0], p7[1], p7[2],   nd[0], nd[1], nd[2],   t1[0], t1[1],
+        p2[0], p2[1], p2[2],   nd[0], nd[1], nd[2],   t2[0], t2[1],
+        p6[0], p6[1], p6[2],   nd[0], nd[1], nd[2],   t3[0], t3[1],
+    };
+    return vertices;
+}
+

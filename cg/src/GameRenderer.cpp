@@ -22,7 +22,7 @@ GameRenderer::~GameRenderer() = default;
 void GameRenderer::init() {
     // BEGIN: Preparing scene
     // BEGIN: Allocating vertex array objects and buffers for each object
-    GLsizei numbOfObjects = 15;
+    GLsizei numbOfObjects = 8;
     // create vertex array objects for noOfObjects objects (VAO)
     vertex_array_object = new GLuint[numbOfObjects];
     glGenVertexArrays(numbOfObjects, vertex_array_object);
@@ -43,22 +43,17 @@ void GameRenderer::init() {
     // END: Allocating vertex array objects and buffers for each object
 
     // Initialize objects to be drawn (see respective sub-methods)
-    //initPyramid();
-    initObject0();
-    initObject1();
-    //inits für Shapes
-    initObjectA();
-    initObjectB();
-    initObject2();
-    initObject3();
-    initObject4();
-    initObject5();
-    initCony();
-    initIce();
-    initCube();
-    initRoof();
-    initField();
-    initBall();
+    initObject0(); // Apfel (behalten)
+    initObject1(); // Banane (behalten)
+    initObjectB(); // Schlange/Box (behalten)
+
+    // Die folgenden Objekte werden aktuell nicht verwendet.
+    // Ihre init-Funktionen wurden gelöscht, daher müssen wir die Aufrufe auskommentieren.
+    // initObjectA();
+    // initObject2();
+    // initObject3();
+    // initBall();
+    // initPyramid();
 
 
     // Specify light parameters
@@ -67,7 +62,7 @@ void GameRenderer::init() {
     GLfloat lightDiffuseColor[4] = {1.0f, 1.0f, 1.0f, 1.0f};
     GLfloat lightSpecularColor[4] = {1.0f, 1.0f, 1.0f, 1.0f};
     light0 = LightSource(lightPosition, lightAmbientColor,
-                         lightDiffuseColor, lightSpecularColor);
+                        lightDiffuseColor, lightSpecularColor);
 
     // Switch on back face culling
     glEnable(GL_CULL_FACE);
@@ -84,15 +79,14 @@ void GameRenderer::init() {
     glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 
     InteractionHandler::setEyeZ(10.0f);
-
 }
 
 void GameRenderer::initObject1(){
     glBindVertexArray(vertex_array_object[1]);
     shaderProgram1 = ShaderProgram();
     shaderProgram1.loadShaderAndCreateProgram(const_cast<char *>(SHADER_PATH),
-                                              const_cast<char *>(VERTEX_SHADER_FILE_NAME0),
-                                              const_cast<char *>(FRAGMENT_SHADER_FILE_NAME0));
+                                            const_cast<char *>(VERTEX_SHADER_FILE_NAME0),
+                                            const_cast<char *>(FRAGMENT_SHADER_FILE_NAME0));
 
     banana = Model();
     banana.loadModel("../resources/banana/banana_mod.obj");
@@ -102,216 +96,93 @@ void GameRenderer::initObject1(){
     vector<GLuint> bananaIndices = banana.getIndices(bananaMeshes[0]);
 
     vector<GLfloat> Vertices;
-
     for (int i = 0; i < bananaVertices.size(); i++) {
-        Vertices.push_back(bananaVertices[i].position.x);
-        Vertices.push_back(bananaVertices[i].position.y);
-        Vertices.push_back(bananaVertices[i].position.z);
-        Vertices.push_back(bananaVertices[i].normal.x);
-        Vertices.push_back(bananaVertices[i].normal.y);
-        Vertices.push_back(bananaVertices[i].normal.z);
-        Vertices.push_back(bananaVertices[i].texcoords.x);
-        Vertices.push_back(bananaVertices[i].texcoords.y);
+        Vertices.push_back(bananaVertices[i].position.x); Vertices.push_back(bananaVertices[i].position.y); Vertices.push_back(bananaVertices[i].position.z);
+        Vertices.push_back(bananaVertices[i].normal.x); Vertices.push_back(bananaVertices[i].normal.y); Vertices.push_back(bananaVertices[i].normal.z);
+        Vertices.push_back(bananaVertices[i].texcoords.x); Vertices.push_back(bananaVertices[i].texcoords.y);
     }
-    // activate and initialize vertex buffer object (VBO)
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer[1]);
-    // floats use 4 bytes in Java
-    glBufferData(GL_ARRAY_BUFFER, (GLsizei) (Vertices.size() * sizeof(Vertices[0])),
-                 &Vertices[0], GL_STATIC_DRAW);
-    //&bunnyVertices[0]
-    // activate and initialize index buffer object (IBO)
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_object[1]);
-    // integers use 4 bytes
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, (GLsizei) (bananaIndices.size() * sizeof(bananaIndices[0])),
-                 &bananaIndices[0], GL_STATIC_DRAW);
 
-    // Activate and order vertex buffer object data for the vertex shader
-    // The vertex buffer contains: position (3), normals (3), texture coordinates (2)
-    // Defining input for vertex shader
-    // Pointer for the vertex shader to the position information per vertex
+    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer[1]);
+    glBufferData(GL_ARRAY_BUFFER, (GLsizei) (Vertices.size() * sizeof(Vertices[0])), &Vertices[0], GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_object[1]);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, (GLsizei) (bananaIndices.size() * sizeof(bananaIndices[0])), &bananaIndices[0], GL_STATIC_DRAW);
+
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(Vertices[0]), nullptr);
-    // Pointer for the vertex shader to the normal information per vertex
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(Vertices[0]),
-                          (void *) (3 * sizeof(Vertices[0])));
-    // Pointer for the vertex shader to the texture coordinates information per vertex
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(Vertices[0]), (void *) (3 * sizeof(Vertices[0])));
     glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(Vertices[0]),
-                          (void *) (6 * sizeof(Vertices[0])));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(Vertices[0]), (void *) (6 * sizeof(Vertices[0])));
 
-    // Specification of material parameters (blue material)
-    /*float matEmission[4] = {0.0f, 0.0f, 0.0f, 1.0f};
-    float matAmbient[4] =  {0.0f, 0.0f, 0.1f, 1.0f};
-    float matDiffuse[4] =  {0.1f, 0.2f, 0.7f, 1.0f};
-    float matSpecular[4] = {0.7f, 0.7f, 0.7f, 1.0f};
-    float matShininess = 200.0f;*/
-
-    // Metallic material
-    GLfloat matEmission[4] = {0.0f, 0.0f, 0.0f, 1.0f};
-    GLfloat matAmbient[4] = {0.2f, 0.2f, 0.2f, 1.0f};
-    GLfloat matDiffuse[4] = {0.5f, 0.5f, 0.5f, 1.0f};
-    GLfloat matSpecular[4] = {0.7f, 0.7f, 0.7f, 1.0f};
-    GLfloat matShininess = 200.0f;
-
-    material0 = Material(matEmission, matAmbient, matDiffuse, matSpecular, matShininess);
-
-    // Load and prepare texture
-    /*int width = 0;
-    int height = 0;
-    int bitDepth = 0;*/
-    int width = 612;
-    int height = 464;
-    int bitDepth = 24;
-    GLuint textureID = 1;
-
+    int width, height, bitDepth;
     string TEXTURE_PATH_FILE2 = string(BANANA_TEXTURE_PATH) + string(BANANA_TEXTURE_FILE_NAME0);
-    const char *texturePathAndFileName2 = TEXTURE_PATH_FILE2.c_str();
+    unsigned char *texture2 = stbi_load(TEXTURE_PATH_FILE2.c_str(), &width, &height, &bitDepth, 3);
 
-    unsigned char *texture2 = stbi_load(texturePathAndFileName2, &width, &height, &bitDepth, 3);
-    if (!texture2) {
-        cout << "Failed to find: " << texturePathAndFileName2 << endl;
-    }
-    cout<<texturePathAndFileName2<<endl;
-    // Activate and use texture as 2D texture (might have to go to "display()")
-    glDisable(GL_TEXTURE_2D);
-    glGenTextures(2, &textureID);
+    glGenTextures(1, &bananaTextureID);
     glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, textureID);
-
-    // set the texture parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glBindTexture(GL_TEXTURE_2D, bananaTextureID);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-    // load the texture in OpenGL
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, texture2);
     glGenerateMipmap(GL_TEXTURE_2D);
-
     stbi_image_free(texture2);
-
-    // END: Prepare bunny for drawing
 }
 
 void GameRenderer::initObject0() {
     glBindVertexArray(vertex_array_object[0]);
     shaderProgram0 = ShaderProgram();
     shaderProgram0.loadShaderAndCreateProgram(const_cast<char *>(SHADER_PATH),
-                                              const_cast<char *>(VERTEX_SHADER_FILE_NAME0),
-                                              const_cast<char *>(FRAGMENT_SHADER_FILE_NAME0));
+                                            const_cast<char *>(VERTEX_SHADER_FILE_NAME0),
+                                            const_cast<char *>(FRAGMENT_SHADER_FILE_NAME0));
 
-    //loading Standford bunny
-    /*bunny.loadModel("../resources/bunny/reconstruction/bun_zipper.ply");*/
     bunny = Model();
     bunny.loadModel("../resources/apple/apple_mod.obj");
-
 
     vector<Mesh> bunnyMeshes = bunny.getMeshes();
     vector<vertex> bunnyVertices = bunny.getVertices(bunnyMeshes[0]);
     vector<GLuint> bunnyIndices = bunny.getIndices(bunnyMeshes[0]);
 
-
-    // The vertex buffer should contain: position (3), normals (3), texture coordinates (2)
     vector<GLfloat> Vertices;
     for (int i = 0; i < bunnyVertices.size(); i++) {
-        Vertices.push_back(bunnyVertices[i].position.x);
-        Vertices.push_back(bunnyVertices[i].position.y);
-        Vertices.push_back(bunnyVertices[i].position.z);
-        Vertices.push_back(bunnyVertices[i].normal.x);
-        Vertices.push_back(bunnyVertices[i].normal.y);
-        Vertices.push_back(bunnyVertices[i].normal.z);
-        Vertices.push_back(bunnyVertices[i].texcoords.x);
-        Vertices.push_back(bunnyVertices[i].texcoords.y);
+        Vertices.push_back(bunnyVertices[i].position.x); Vertices.push_back(bunnyVertices[i].position.y); Vertices.push_back(bunnyVertices[i].position.z);
+        Vertices.push_back(bunnyVertices[i].normal.x); Vertices.push_back(bunnyVertices[i].normal.y); Vertices.push_back(bunnyVertices[i].normal.z);
+        Vertices.push_back(bunnyVertices[i].texcoords.x); Vertices.push_back(bunnyVertices[i].texcoords.y);
     }
 
-
-    // activate and initialize vertex buffer object (VBO)
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer[0]);
-    // floats use 4 bytes in Java
-    glBufferData(GL_ARRAY_BUFFER, (GLsizei) (Vertices.size() * sizeof(Vertices[0])),
-                 &Vertices[0], GL_STATIC_DRAW);
-    //&bunnyVertices[0]
-    // activate and initialize index buffer object (IBO)
+    glBufferData(GL_ARRAY_BUFFER, (GLsizei) (Vertices.size() * sizeof(Vertices[0])), &Vertices[0], GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_object[0]);
-    // integers use 4 bytes
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, (GLsizei) (bunnyIndices.size() * sizeof(bunnyIndices[0])),
-                 &bunnyIndices[0], GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, (GLsizei) (bunnyIndices.size() * sizeof(bunnyIndices[0])), &bunnyIndices[0], GL_STATIC_DRAW);
 
-    // Activate and order vertex buffer object data for the vertex shader
-    // The vertex buffer contains: position (3), normals (3), texture coordinates (2)
-    // Defining input for vertex shader
-    // Pointer for the vertex shader to the position information per vertex
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(Vertices[0]), nullptr);
-    // Pointer for the vertex shader to the normal information per vertex
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(Vertices[0]),
-                          (void *) (3 * sizeof(Vertices[0])));
-    // Pointer for the vertex shader to the texture coordinates information per vertex
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(Vertices[0]), (void *) (3 * sizeof(Vertices[0])));
     glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(Vertices[0]),
-                          (void *) (6 * sizeof(Vertices[0])));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(Vertices[0]), (void *) (6 * sizeof(Vertices[0])));
 
-    // Specification of material parameters (blue material)
-    /*float matEmission[4] = {0.0f, 0.0f, 0.0f, 1.0f};
-    float matAmbient[4] =  {0.0f, 0.0f, 0.1f, 1.0f};
-    float matDiffuse[4] =  {0.1f, 0.2f, 0.7f, 1.0f};
-    float matSpecular[4] = {0.7f, 0.7f, 0.7f, 1.0f};
-    float matShininess = 200.0f;*/
-
-    // Metallic material
-    GLfloat matEmission[4] = {0.0f, 0.0f, 0.0f, 1.0f};
-    GLfloat matAmbient[4] = {0.2f, 0.2f, 0.2f, 1.0f};
-    GLfloat matDiffuse[4] = {0.5f, 0.5f, 0.5f, 1.0f};
-    GLfloat matSpecular[4] = {0.7f, 0.7f, 0.7f, 1.0f};
-    GLfloat matShininess = 200.0f;
-
+    GLfloat matEmission[4] = {0.0f, 0.0f, 0.0f, 1.0f}; GLfloat matAmbient[4] = {0.2f, 0.2f, 0.2f, 1.0f}; GLfloat matDiffuse[4] = {0.5f, 0.5f, 0.5f, 1.0f}; GLfloat matSpecular[4] = {0.7f, 0.7f, 0.7f, 1.0f}; GLfloat matShininess = 200.0f;
     material0 = Material(matEmission, matAmbient, matDiffuse, matSpecular, matShininess);
 
-    // Load and prepare texture
-    /*int width = 0;
-    int height = 0;
-    int bitDepth = 0;*/
-    int width = 612;
-    int height = 464;
-    int bitDepth = 24;
-    GLuint textureID = 0;
-
+    int width, height, bitDepth;
     string TEXTURE_PATH_FILE = string(TEXTURE_PATH) + string(TEXTURE_FILE_NAME0);
-    const char *texturePathAndFileName = TEXTURE_PATH_FILE.c_str();
+    unsigned char *texture = stbi_load(TEXTURE_PATH_FILE.c_str(), &width, &height, &bitDepth, 3);
 
-    unsigned char *texture = stbi_load(texturePathAndFileName, &width, &height, &bitDepth, 3);
-    if (!texture) {
-        cout << "Failed to find: " << texturePathAndFileName << endl;
-    }
-    cout<<texturePathAndFileName<<endl;
-    // Activate and use texture as 2D texture (might have to go to "display()")
-    glDisable(GL_TEXTURE_2D);
-    glGenTextures(2, &textureID);
+    glGenTextures(1, &appleTextureID);
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, textureID);
-
-    // set the texture parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glBindTexture(GL_TEXTURE_2D, appleTextureID);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-    // load the texture in OpenGL
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, texture);
     glGenerateMipmap(GL_TEXTURE_2D);
-
     stbi_image_free(texture);
-
-    // END: Prepare bunny for drawing
 }
 
 //init-Funktionen für Shapes
 void GameRenderer::initObjectA(){
     // BEGIN: Prepare a sphere for drawing (object 0)
     // create sphere data for rendering a sphere using an index array into a vertex array
-    glBindVertexArray(vertex_array_object[12]);
+    glBindVertexArray(vertex_array_object[2]);
     // Shader program for object 0
     shaderProgramA = ShaderProgram();
     shaderProgramA.loadShaderAndCreateProgram(const_cast<char *>(SHADER_PATH),
@@ -324,12 +195,12 @@ void GameRenderer::initObjectA(){
     GLint* sphereIndices = sphere0.makeIndicesForTriangleStrip();
 
     // activate and initialize vertex buffer object (VBO)
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer[12]);
+    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer[2]);
     glBufferData(GL_ARRAY_BUFFER, (GLsizei) (sphere0.getNoOfVertices() * sizeof(sphereVertices[0])),
                  sphereVertices, GL_STATIC_DRAW);
 
     // activate and initialize index buffer object (IBO)
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_object[12]);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_object[2]);
 
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, (GLsizei) (sphere0.getNoOfIndices() * sizeof(sphereIndices[0])),
                  sphereIndices, GL_STATIC_DRAW);
@@ -349,49 +220,46 @@ void GameRenderer::initObjectA(){
 }
 
 void GameRenderer::initObjectB() {
-    glBindVertexArray(vertex_array_object[13]);
+    glBindVertexArray(vertex_array_object[3]);
     shaderProgramB = ShaderProgram();
     shaderProgramB.loadShaderAndCreateProgram(const_cast<char *>(SHADER_PATH),
-                                              const_cast<char *>(VERTEX_SHADER_FILE_NAMEb),
-                                              const_cast<char *>(FRAGMENT_SHADER_FILE_NAMEb));
+                                            const_cast<char *>(VERTEX_SHADER_FILE_NAME0),
+                                            const_cast<char *>(FRAGMENT_SHADER_FILE_NAME0));
 
-    GLfloat color1[3] = {0.1f, 0.8f, 0.2f};
     box0 = Box();
-    GLfloat* cubeVertices = box0.makeBoxVertices( 0.5f,  0.5f, 0.5f, color1);
+    GLfloat* cubeVertices = box0.makeBoxVerticesWithTex(0.5f, 0.5f, 0.5f);
     GLint* cubeIndices = box0.makeBoxIndicesForTriangleStrip();
 
-    // activate and initialize vertex buffer object (VBO)
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer[13]);
-    // floats use 4 bytes in Java
-    glBufferData(GL_ARRAY_BUFFER, (GLsizei) (box0.getNoOfVerticesForBox() * sizeof(cubeVertices[0])),
-                 cubeVertices, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer[3]);
+    glBufferData(GL_ARRAY_BUFFER, 192 * sizeof(GLfloat), cubeVertices, GL_STATIC_DRAW);
 
-    // activate and initialize index buffer object (IBO)
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_object[13]);
-    // integers use 4 bytes
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_object[3]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, (GLsizei) (box0.getNoOfIndicesForBox() * sizeof(cubeIndices[0])),
-                 cubeIndices, GL_STATIC_DRAW);
+                cubeIndices, GL_STATIC_DRAW);
 
-    // Activate and order vertex buffer object data for the vertex shader
-    // The vertex buffer contains: position (3), color (3), normals (3)
-    // Defining input for vertex shader
-    // Pointer for the vertex shader to the position information per vertex
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(cubeVertices[0]), nullptr);
-    // Pointer for the vertex shader to the color information per vertex
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), nullptr);
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(cubeVertices[0]),
-                          (void *) (3 * sizeof(cubeVertices[0])));
-    // Pointer for the vertex shader to the normal information per vertex
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void *) (3 * sizeof(GLfloat)));
     glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(cubeVertices[0]),
-                          (void *) (6 * sizeof(cubeVertices[0])));
-    // END: Prepare cube for drawing
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void *) (6 * sizeof(GLfloat)));
 
+    int width, height, bitDepth;
+    string snakeTexPath = string(SNAKE_TEXTURE_PATH) + string(SNAKE_TEXTURE_FILE_NAME0);
+    unsigned char* textureData = stbi_load(snakeTexPath.c_str(), &width, &height, &bitDepth, 3);
+
+    glGenTextures(1, &snakeTextureID);
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, snakeTextureID);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, textureData);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    stbi_image_free(textureData);
 }
 
 void GameRenderer::initObject2(){
-    glBindVertexArray(vertex_array_object[2]);
+    glBindVertexArray(vertex_array_object[4]);
     shaderProgram2 = ShaderProgram();
     shaderProgram2.loadShaderAndCreateProgram(const_cast<char *>(SHADER_PATH),
                                               const_cast<char *>(VERTEX_SHADER_FILE_NAME2),
@@ -403,13 +271,13 @@ void GameRenderer::initObject2(){
     GLint* coneIndices = cone0.makeIndicesForTriangleStrip();
 
     // activate and initialize vertex buffer object (VBO)
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer[2]);
+    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer[4]);
     // floats use 4 bytes in Java
     glBufferData(GL_ARRAY_BUFFER, (GLsizei) (cone0.getNoOfVertices() * sizeof(coneVertices[0])),
                  coneVertices, GL_STATIC_DRAW);
 
     // activate and initialize index buffer object (IBO)
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_object[2]);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_object[4]);
     // integers use 4 bytes
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, (GLsizei) (cone0.getNoOfIndices() * sizeof(coneIndices[0])),
                  coneIndices, GL_STATIC_DRAW);
@@ -433,7 +301,7 @@ void GameRenderer::initObject2(){
 }
 
 void GameRenderer::initObject3(){
-    glBindVertexArray(vertex_array_object[3]);
+    glBindVertexArray(vertex_array_object[5]);
     shaderProgram3 = ShaderProgram();
     shaderProgram3.loadShaderAndCreateProgram(const_cast<char *>(SHADER_PATH),
                                               const_cast<char *>(VERTEX_SHADER_FILE_NAME3),
@@ -445,13 +313,13 @@ void GameRenderer::initObject3(){
     GLint* roofIndices = roof0.makeIndicesForTriangleStrip();
 
     // activate and initialize vertex buffer object (VBO)
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer[3]);
+    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer[5]);
     // floats use 4 bytes in Java
     glBufferData(GL_ARRAY_BUFFER, (GLsizei) (roof0.getNoOfVertices() * sizeof(roofVertices[0])),
                  roofVertices, GL_STATIC_DRAW);
 
     // activate and initialize index buffer object (IBO)
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_object[3]);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_object[5]);
     // integers use 4 bytes
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, (GLsizei) (roof0.getNoOfIndices() * sizeof(roofIndices[0])),
                  roofIndices, GL_STATIC_DRAW);
@@ -474,294 +342,10 @@ void GameRenderer::initObject3(){
 
 }
 
-void GameRenderer::initObject4(){
-    glBindVertexArray(vertex_array_object[4]);
-    shaderProgram2 = ShaderProgram();
-    shaderProgram2.loadShaderAndCreateProgram(const_cast<char *>(SHADER_PATH),
-                                              const_cast<char *>(VERTEX_SHADER_FILE_NAME2),
-                                              const_cast<char *>(FRAGMENT_SHADER_FILE_NAME2));
-
-    GLfloat color4[3] = {0.6f, 0.4f, 0.2f};
-    treelog = Cone(32);
-    GLfloat* treelogVertices = treelog.makeVertices( 0.1f,  0.1f, 0.8f, color4);
-    GLint* treelogIndices = treelog.makeIndicesForTriangleStrip();
-
-    // activate and initialize vertex buffer object (VBO)
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer[4]);
-    // floats use 4 bytes in Java
-    glBufferData(GL_ARRAY_BUFFER, (GLsizei) (treelog.getNoOfVertices() * sizeof(treelogVertices[0])),
-                 treelogVertices, GL_STATIC_DRAW);
-
-    // activate and initialize index buffer object (IBO)
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_object[4]);
-    // integers use 4 bytes
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, (GLsizei) (treelog.getNoOfIndices() * sizeof(treelogIndices[0])),
-                 treelogIndices, GL_STATIC_DRAW);
-
-    // Activate and order vertex buffer object data for the vertex shader
-    // The vertex buffer contains: position (3), color (3), normals (3)
-    // Defining input for vertex shader
-    // Pointer for the vertex shader to the position information per vertex
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(treelogVertices[0]), nullptr);
-    // Pointer for the vertex shader to the color information per vertex
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(treelogVertices[0]),
-                          (void *) (3 * sizeof(treelogVertices[0])));
-    // Pointer for the vertex shader to the normal information per vertex
-    glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(treelogVertices[0]),
-                          (void *) (6 * sizeof(treelogVertices[0])));
-    // END: Prepare cube for drawing
-}
-
-void GameRenderer::initObject5(){
-    glBindVertexArray(vertex_array_object[5]);
-    shaderProgram2 = ShaderProgram();
-    shaderProgram2.loadShaderAndCreateProgram(const_cast<char *>(SHADER_PATH),
-                                              const_cast<char *>(VERTEX_SHADER_FILE_NAME2),
-                                              const_cast<char *>(FRAGMENT_SHADER_FILE_NAME2));
-
-    GLfloat color5[3] = {0.2f, 1.0f, 0.4f};
-    treecrown = Cone(32);
-    GLfloat* treecrownVertices = treecrown.makeVertices( 0.001f,  0.3f, 0.6f, color5);
-    GLint* treecrownIndices = treecrown.makeIndicesForTriangleStrip();
-
-    // activate and initialize vertex buffer object (VBO)
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer[5]);
-    // floats use 4 bytes in Java
-    glBufferData(GL_ARRAY_BUFFER, (GLsizei) (treecrown.getNoOfVertices() * sizeof(treecrownVertices[0])),
-                 treecrownVertices, GL_STATIC_DRAW);
-
-    // activate and initialize index buffer object (IBO)
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_object[5]);
-    // integers use 4 bytes
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, (GLsizei) (treecrown.getNoOfIndices() * sizeof(treecrownIndices[0])),
-                 treecrownIndices, GL_STATIC_DRAW);
-
-    // Activate and order vertex buffer object data for the vertex shader
-    // The vertex buffer contains: position (3), color (3), normals (3)
-    // Defining input for vertex shader
-    // Pointer for the vertex shader to the position information per vertex
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(treecrownVertices[0]), nullptr);
-    // Pointer for the vertex shader to the color information per vertex
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(treecrownVertices[0]),
-                          (void *) (3 * sizeof(treecrownVertices[0])));
-    // Pointer for the vertex shader to the normal information per vertex
-    glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(treecrownVertices[0]),
-                          (void *) (6 * sizeof(treecrownVertices[0])));
-    // END: Prepare cube for drawing
-}
-
-void GameRenderer::initCony(){
-    glBindVertexArray(vertex_array_object[6]);
-    shaderProgram2 = ShaderProgram();
-    shaderProgram2.loadShaderAndCreateProgram(const_cast<char *>(SHADER_PATH),
-                                              const_cast<char *>(VERTEX_SHADER_FILE_NAME2),
-                                              const_cast<char *>(FRAGMENT_SHADER_FILE_NAME2));
-
-    GLfloat color6[3] = {0.9f, 0.8f, 0.6f};
-    cony = Cone(32);
-    GLfloat* conyVertices = cony.makeVertices( 0.2f,  0.001f, 0.8f, color6);
-    GLint* conyIndices = cony.makeIndicesForTriangleStrip();
-
-    // activate and initialize vertex buffer object (VBO)
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer[6]);
-    // floats use 4 bytes in Java
-    glBufferData(GL_ARRAY_BUFFER, (GLsizei) (cony.getNoOfVertices() * sizeof(conyVertices[0])),
-                 conyVertices, GL_STATIC_DRAW);
-
-    // activate and initialize index buffer object (IBO)
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_object[6]);
-    // integers use 4 bytes
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, (GLsizei) (cony.getNoOfIndices() * sizeof(conyIndices[0])),
-                 conyIndices, GL_STATIC_DRAW);
-
-    // Activate and order vertex buffer object data for the vertex shader
-    // The vertex buffer contains: position (3), color (3), normals (3)
-    // Defining input for vertex shader
-    // Pointer for the vertex shader to the position information per vertex
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(conyVertices[0]), nullptr);
-    // Pointer for the vertex shader to the color information per vertex
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(conyVertices[0]),
-                          (void *) (3 * sizeof(conyVertices[0])));
-    // Pointer for the vertex shader to the normal information per vertex
-    glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(conyVertices[0]),
-                          (void *) (6 * sizeof(conyVertices[0])));
-    // END: Prepare cube for drawing
-}
-
-void GameRenderer::initIce(){
-    glBindVertexArray(vertex_array_object[7]);
-    // Shader program for object 0
-    shaderProgramA = ShaderProgram();
-    shaderProgramA.loadShaderAndCreateProgram(const_cast<char *>(SHADER_PATH),
-                                              const_cast<char *>(VERTEX_SHADER_FILE_NAMEa),
-                                              const_cast<char *>(FRAGMENT_SHADER_FILE_NAMEa));
-
-    GLfloat color7[3] = {0.9f, 0.7f, 0.8f};
-    ice = Sphere(32, 32);
-    GLfloat* iceVertices = ice.makeVertices(0.18f, color7);
-    GLint* iceIndices = ice.makeIndicesForTriangleStrip();
-
-    // activate and initialize vertex buffer object (VBO)
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer[7]);
-    glBufferData(GL_ARRAY_BUFFER, (GLsizei) (ice.getNoOfVertices() * sizeof(iceVertices[0])),
-                 iceVertices, GL_STATIC_DRAW);
-
-    // activate and initialize index buffer object (IBO)
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_object[7]);
-
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, (GLsizei) (ice.getNoOfIndices() * sizeof(iceIndices[0])),
-                 iceIndices, GL_STATIC_DRAW);
-
-    // Activate and order vertex buffer object data for the vertex shader
-    // Defining input variables for vertex shader
-    // Pointer for the vertex shader to the position information per vertex
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(iceVertices[0]), nullptr);
-    // Pointer for the vertex shader to the color information per vertex
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(iceVertices[0]), (void*) (3 * sizeof(iceVertices[0])));
-    // Pointer for the vertex shader to the normal information per vertex
-    glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(iceVertices[0]), (void*) (6 * sizeof(iceVertices[0])));
-    // END: Prepare sphere for drawing
-}
-
-void GameRenderer::initCube(){
-    glBindVertexArray(vertex_array_object[8]);
-    shaderProgramB = ShaderProgram();
-    shaderProgramB.loadShaderAndCreateProgram(const_cast<char *>(SHADER_PATH),
-                                              const_cast<char *>(VERTEX_SHADER_FILE_NAMEb),
-                                              const_cast<char *>(FRAGMENT_SHADER_FILE_NAMEb));
-
-    GLfloat color8[3] = {0.8f, 0.3f, 0.9f};
-    cube = Box();
-    GLfloat* cubeVertices = cube.makeBoxVertices( 0.8f,  0.4f, 0.4f, color8);
-    GLint* cubeIndices = cube.makeBoxIndicesForTriangleStrip();
-
-    // activate and initialize vertex buffer object (VBO)
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer[8]);
-    // floats use 4 bytes in Java
-    glBufferData(GL_ARRAY_BUFFER, (GLsizei) (cube.getNoOfVerticesForBox() * sizeof(cubeVertices[0])),
-                 cubeVertices, GL_STATIC_DRAW);
-
-    // activate and initialize index buffer object (IBO)
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_object[8]);
-    // integers use 4 bytes
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, (GLsizei) (cube.getNoOfIndicesForBox() * sizeof(cubeIndices[0])),
-                 cubeIndices, GL_STATIC_DRAW);
-
-    // Activate and order vertex buffer object data for the vertex shader
-    // The vertex buffer contains: position (3), color (3), normals (3)
-    // Defining input for vertex shader
-    // Pointer for the vertex shader to the position information per vertex
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(cubeVertices[0]), nullptr);
-    // Pointer for the vertex shader to the color information per vertex
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(cubeVertices[0]),
-                          (void *) (3 * sizeof(cubeVertices[0])));
-    // Pointer for the vertex shader to the normal information per vertex
-    glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(cubeVertices[0]),
-                          (void *) (6 * sizeof(cubeVertices[0])));
-    // END: Prepare cube for drawing
-}
-
-void GameRenderer::initRoof(){
-    glBindVertexArray(vertex_array_object[9]);
-    shaderProgram3 = ShaderProgram();
-    shaderProgram3.loadShaderAndCreateProgram(const_cast<char *>(SHADER_PATH),
-                                              const_cast<char *>(VERTEX_SHADER_FILE_NAME3),
-                                              const_cast<char *>(FRAGMENT_SHADER_FILE_NAME3));
-
-    GLfloat color9[3] = {0.2f, 0.8f, 0.6f};
-    roof = Roof();
-    GLfloat* roofVertices = roof.makeVertices( 0.6f,  0.8f, 0.4f, color9);
-    GLint* roofIndices = roof.makeIndicesForTriangleStrip();
-
-    // activate and initialize vertex buffer object (VBO)
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer[9]);
-    // floats use 4 bytes in Java
-    glBufferData(GL_ARRAY_BUFFER, (GLsizei) (roof.getNoOfVertices() * sizeof(roofVertices[0])),
-                 roofVertices, GL_STATIC_DRAW);
-
-    // activate and initialize index buffer object (IBO)
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_object[9]);
-    // integers use 4 bytes
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, (GLsizei) (roof.getNoOfIndices() * sizeof(roofIndices[0])),
-                 roofIndices, GL_STATIC_DRAW);
-
-    // Activate and order vertex buffer object data for the vertex shader
-    // The vertex buffer contains: position (3), color (3), normals (3)
-    // Defining input for vertex shader
-    // Pointer for the vertex shader to the position information per vertex
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(roofVertices[0]), nullptr);
-    // Pointer for the vertex shader to the color information per vertex
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(roofVertices[0]),
-                          (void *) (3 * sizeof(roofVertices[0])));
-    // Pointer for the vertex shader to the normal information per vertex
-    glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(roofVertices[0]),
-                          (void *) (6 * sizeof(roofVertices[0])));
-    // END: Prepare cube for drawing
-}
-
-void GameRenderer::initField(){
-    glBindVertexArray(vertex_array_object[10]);
-    shaderProgramB = ShaderProgram();
-    shaderProgramB.loadShaderAndCreateProgram(const_cast<char *>(SHADER_PATH),
-                                              const_cast<char *>(VERTEX_SHADER_FILE_NAMEb),
-                                              const_cast<char *>(FRAGMENT_SHADER_FILE_NAMEb));
-
-    GLfloat color10[3] = {0.3f, 0.3f, 0.3f};
-    field = Box();
-    GLfloat* fieldVertices = field.makeBoxVertices( 10.0f,  0.1f, 10.0f, color10);
-    GLint* fieldIndices = field.makeBoxIndicesForTriangleStrip();
-
-    // activate and initialize vertex buffer object (VBO)
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer[10]);
-    // floats use 4 bytes in Java
-    glBufferData(GL_ARRAY_BUFFER, (GLsizei) (field.getNoOfVerticesForBox() * sizeof(fieldVertices[0])),
-                 fieldVertices, GL_STATIC_DRAW);
-
-    // activate and initialize index buffer object (IBO)
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_object[10]);
-    // integers use 4 bytes
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, (GLsizei) (field.getNoOfIndicesForBox() * sizeof(fieldIndices[0])),
-                 fieldIndices, GL_STATIC_DRAW);
-
-    // Activate and order vertex buffer object data for the vertex shader
-    // The vertex buffer contains: position (3), color (3), normals (3)
-    // Defining input for vertex shader
-    // Pointer for the vertex shader to the position information per vertex
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(fieldVertices[0]), nullptr);
-    // Pointer for the vertex shader to the color information per vertex
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(fieldVertices[0]),
-                          (void *) (3 * sizeof(fieldVertices[0])));
-    // Pointer for the vertex shader to the normal information per vertex
-    glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(fieldVertices[0]),
-                          (void *) (6 * sizeof(fieldVertices[0])));
-    // END: Prepare cube for drawing
-}
-
 void GameRenderer::initBall(){
     // BEGIN: Prepare a sphere for drawing (object 0)
     // create sphere data for rendering a sphere using an index array into a vertex array
-    glBindVertexArray(vertex_array_object[11]);
+    glBindVertexArray(vertex_array_object[6]);
     // Shader program for object 0
     shaderProgramA = ShaderProgram();
     shaderProgramA.loadShaderAndCreateProgram(const_cast<char *>(SHADER_PATH),
@@ -774,12 +358,12 @@ void GameRenderer::initBall(){
     GLint* ballIndices = ball.makeIndicesForTriangleStrip();
 
     // activate and initialize vertex buffer object (VBO)
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer[11]);
+    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer[6]);
     glBufferData(GL_ARRAY_BUFFER, (GLsizei) (ball.getNoOfVertices() * sizeof(ballVertices[0])),
                  ballVertices, GL_STATIC_DRAW);
 
     // activate and initialize index buffer object (IBO)
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_object[11]);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_object[6]);
 
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, (GLsizei) (ball.getNoOfIndices() * sizeof(ballIndices[0])),
                  ballIndices, GL_STATIC_DRAW);
@@ -797,8 +381,9 @@ void GameRenderer::initBall(){
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(ballVertices[0]), (void*) (6 * sizeof(ballVertices[0])));
     // END: Prepare sphere for drawing
 }
+
 void GameRenderer::initPyramid() {
-    glBindVertexArray(vertex_array_object[14]);
+    glBindVertexArray(vertex_array_object[7]);
     shaderProgramP = ShaderProgram();
     shaderProgramP.loadShaderAndCreateProgram(const_cast<char *>(SHADER_PATH),
                                               const_cast<char *>(VERTEX_SHADER_FILE_NAMEb),
@@ -810,13 +395,13 @@ void GameRenderer::initPyramid() {
     GLint* pyramidIndices = pyramid.makePyramidIndices();
 
     // activate and initialize vertex buffer object (VBO)
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer[14]);
+    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer[7]);
     // floats use 4 bytes in Java
     glBufferData(GL_ARRAY_BUFFER, (GLsizei) (pyramid.getNoOfVerticesForPyramid() * sizeof(pyramidVertices[0])),
                  pyramidVertices, GL_STATIC_DRAW);
 
     // activate and initialize index buffer object (IBO)
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_object[14]);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_object[7]);
     // integers use 4 bytes
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, (GLsizei) (pyramid.getNoOfIndicesForPyramid() * sizeof(pyramidIndices[0])),
                  pyramidIndices, GL_STATIC_DRAW);
@@ -891,12 +476,7 @@ void GameRenderer::display(GLFWwindow* window) {
     //displayObjectA();
     //displayObject2();
     //displayObject3();
-    //displayObject4();
-    //displayObject5();
-    //displayCony();
-    //displayIce();
-    //serialHouse(0.6f, 5);
-    displayField();
+
     //displayPyramid();
 
     if (grid != nullptr) {
@@ -916,80 +496,47 @@ void GameRenderer::display(GLFWwindow* window) {
 
 
 void GameRenderer::displayObject0(float* LightPosition){
-
-    // Get a handle for our "MV" and "MVP" uniform
-    // Only during the initialisation
+    glUseProgram(shaderProgram0.getShaderProgramID());
+    // ... (Der ganze Code für Matrizen, Licht & Material aus der Originalfunktion bleibt hier)
     GLint mp_location = glGetUniformLocation(shaderProgram0.getShaderProgramID(), "projectionMatrix");
     GLint mv_location = glGetUniformLocation(shaderProgram0.getShaderProgramID(), "modelviewMatrix");
     GLint mvit_location = glGetUniformLocation(shaderProgram0.getShaderProgramID(), "modelviewITMatrix");
-
-    //glBindVertexArray(vertex_array_object);
-    glUseProgram(shaderProgram0.getShaderProgramID());
-
-    // transpose inverse of the actual model view matrix for calculation with the normals
     glm::mat4x4 modelviewITMat(1.0f);
     modelviewITMat = glm::transpose(glm::inverse(modelviewMat));
-
     glUniformMatrix4fv(mp_location, 1, GL_FALSE, &projMat[0][0]);
     glUniformMatrix4fv(mv_location, 1, GL_FALSE, &modelviewMat[0][0]);
     glUniformMatrix4fv(mvit_location, 1, GL_FALSE, &modelviewITMat[0][0]);
+    glUniform4fv(3, 1, light0.getPosition()); glUniform4fv(4, 1, light0.getAmbient()); glUniform4fv(5, 1, light0.getDiffuse()); glUniform4fv(6, 1, light0.getSpecular());
+    glUniform4fv(7, 1, material0.getEmission()); glUniform4fv(8, 1, material0.getAmbient()); glUniform4fv(9, 1, material0.getDiffuse()); glUniform4fv(10, 1, material0.getSpecular()); glUniform1f(11, material0.getShininess());
 
-    // transfer parameters of light source
-    glUniform4fv(3, 1, light0.getPosition());
-    glUniform4fv(4, 1, light0.getAmbient());
-    glUniform4fv(5, 1, light0.getDiffuse());
-    glUniform4fv(6, 1, light0.getSpecular());
-
-    // transfer material parameters
-    glUniform4fv(7, 1, material0.getEmission());
-    glUniform4fv(8, 1, material0.getAmbient());
-    glUniform4fv(9, 1, material0.getDiffuse());
-    glUniform4fv(10, 1, material0.getSpecular());
-    glUniform1f(11, material0.getShininess());
+    // Apfel-Textur auf Slot 0 legen
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, appleTextureID);
 
     glBindVertexArray(vertex_array_object[0]);
-
-    // Draws the elements in the order defined by the index buffer object (IBO)
     glDrawElements(GL_TRIANGLES, (GLsizei) bunny.getNoOfIndices(bunny), GL_UNSIGNED_INT, nullptr);
 }
 
 void GameRenderer::displayObject1(float* LightPosition){
-
-    // Get a handle for our "MV" and "MVP" uniform
-    // Only during the initialisation
+    glUseProgram(shaderProgram1.getShaderProgramID());
+    // ... (Der ganze Code für Matrizen, Licht & Material aus der Originalfunktion bleibt hier)
     GLint mp_location = glGetUniformLocation(shaderProgram1.getShaderProgramID(), "projectionMatrix");
     GLint mv_location = glGetUniformLocation(shaderProgram1.getShaderProgramID(), "modelviewMatrix");
     GLint mvit_location = glGetUniformLocation(shaderProgram1.getShaderProgramID(), "modelviewITMatrix");
-
-    //glBindVertexArray(vertex_array_object);
-    glUseProgram(shaderProgram1.getShaderProgramID());
-
-    // transpose inverse of the actual model view matrix for calculation with the normals
     glm::mat4x4 modelviewITMat(1.0f);
     modelviewITMat = glm::transpose(glm::inverse(modelviewMat));
-
     glUniformMatrix4fv(mp_location, 1, GL_FALSE, &projMat[0][0]);
     glUniformMatrix4fv(mv_location, 1, GL_FALSE, &modelviewMat[0][0]);
     glUniformMatrix4fv(mvit_location, 1, GL_FALSE, &modelviewITMat[0][0]);
+    glUniform4fv(3, 1, light0.getPosition()); glUniform4fv(4, 1, light0.getAmbient()); glUniform4fv(5, 1, light0.getDiffuse()); glUniform4fv(6, 1, light0.getSpecular());
+    glUniform4fv(7, 1, material0.getEmission()); glUniform4fv(8, 1, material0.getAmbient()); glUniform4fv(9, 1, material0.getDiffuse()); glUniform4fv(10, 1, material0.getSpecular()); glUniform1f(11, material0.getShininess());
 
-    // transfer parameters of light source
-    glUniform4fv(3, 1, light0.getPosition());
-    glUniform4fv(4, 1, light0.getAmbient());
-    glUniform4fv(5, 1, light0.getDiffuse());
-    glUniform4fv(6, 1, light0.getSpecular());
-
-    // transfer material parameters
-    glUniform4fv(7, 1, material0.getEmission());
-    glUniform4fv(8, 1, material0.getAmbient());
-    glUniform4fv(9, 1, material0.getDiffuse());
-    glUniform4fv(10, 1, material0.getSpecular());
-    glUniform1f(11, material0.getShininess());
+    // Bananen-Textur auf Slot 0 legen
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, bananaTextureID);
 
     glBindVertexArray(vertex_array_object[1]);
-
-    // Draws the elements in the order defined by the index buffer object (IBO)
     glDrawElements(GL_TRIANGLES, (GLsizei) banana.getNoOfIndices(banana), GL_UNSIGNED_INT, nullptr);
-
 }
 
 //display-Funktionen für Shapes
@@ -1009,109 +556,40 @@ void GameRenderer::displayObjectA(){
     glUniformMatrix4fv(mp_location, 1, GL_FALSE, &projMat[0][0]);
     glUniformMatrix4fv(mv_location, 1, GL_FALSE, &model[0][0]);
 
-    glBindVertexArray(vertex_array_object[12]);
+    glBindVertexArray(vertex_array_object[2]);
     // Draws the elements in the order defined by the index buffer object (IBO)
     glDrawElements(GL_TRIANGLE_STRIP, sphere0.getNoOfIndices(), GL_UNSIGNED_INT, nullptr);
 }
 
 void GameRenderer::displayObjectB(float time){
-
-    // Get a handle for our "MV" and "MVP" uniform
-    // Only during the initialisation
+    glUseProgram(shaderProgramB.getShaderProgramID());
     GLint mp_location = glGetUniformLocation(shaderProgramB.getShaderProgramID(), "projectionMatrix");
     GLint mv_location = glGetUniformLocation(shaderProgramB.getShaderProgramID(), "modelviewMatrix");
+    GLint mvit_location = glGetUniformLocation(shaderProgramB.getShaderProgramID(), "modelviewITMatrix");
 
-    //glBindVertexArray(vertex_array_object);
-    glUseProgram(shaderProgramB.getShaderProgramID());
-
-    glm::mat4x4  model(1.0f);
-
-    float timerZa;
-    float timerZb;
-    float goZa;
-    float goZb;
-    float goX;
-    float timerX;
-    float slitherX;
-    float slitherZ;
-    float scaleZ;
-
-    if(time < 10.0f){
-        slitherX = sin(time*6) * 0.1f;
-        timerZa = time;
-        scaleZ = 1;
-        if(time = 0.0f){goZa = 0.0f;}
-        goZa = timerZa * 0.6f;
-        if(goZa >= 4.0f){goZa = 4.0f;}
-    }
-    if(time > 10.0f && time < 15.0f){
-        slitherZ = sin(time*6) * 0.1f;
-        goZa = 4.0f;
-        timerX = time - 10.0f;
-        scaleZ = 2;
-        if(time = 10.0f){goX = 0.0f;}
-        goX = timerX * 0.6f;
-        if(goX >= 2.0f){goX = 2.0f;}
-    }
-    if(time > 15.0f && time < 25.0f){
-        slitherX = sin(time*6) * 0.1f;
-        goZa = 4.0f;
-        goX = 2.0f;
-        timerZb = time - 15.0f;
-        scaleZ = 3;
-        if(time = 15.0f){goZb = 0.0f;}
-        goZb = timerZb * 0.6f;
-        if(goZb >= 4.0f){goZb = 4.0f;}
-    }
-    if(time > 15.0f){
-        slitherX = sin(time*6) * 0.1f;
-        goZa = 4.0f;
-        goZb = 4.0f;
-        goX = 2.0f;
-        scaleZ = 4;
-    }
-
-
-    model = glm::translate(modelviewMat, glm::vec3(
-        0.0f + slitherX + goX,
-        0.0f + 0.25f,
-        4 + slitherZ - goZa - goZb));
-    //model = glm::rotate(model, glm::radians(45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    // Die originale Bewegungslogik
+    glm::mat4x4 model(1.0f);
+    float timerZa, timerZb, goZa, goZb, goX, timerX, slitherX, slitherZ, scaleZ;
+    if(time < 10.0f){ slitherX = sin(time*6) * 0.1f; timerZa = time; scaleZ = 1; if(time == 0.0f){goZa = 0.0f;} goZa = timerZa * 0.6f; if(goZa >= 4.0f){goZa = 4.0f;} goX = 0; goZb = 0; slitherZ = 0;
+    } else if(time >= 10.0f && time < 15.0f){ slitherZ = sin(time*6) * 0.1f; goZa = 4.0f; timerX = time - 10.0f; scaleZ = 2; if(time == 10.0f){goX = 0.0f;} goX = timerX * 0.6f; if(goX >= 2.0f){goX = 2.0f;} slitherX = 0; goZb = 0;
+    } else if(time >= 15.0f && time < 25.0f){ slitherX = sin(time*6) * 0.1f; goZa = 4.0f; goX = 2.0f; timerZb = time - 15.0f; scaleZ = 3; if(time == 15.0f){goZb = 0.0f;} goZb = timerZb * 0.6f; if(goZb >= 4.0f){goZb = 4.0f;} slitherZ = 0;
+    } else { slitherX = sin(time*6) * 0.1f; goZa = 4.0f; goZb = 4.0f; goX = 2.0f; scaleZ = 4; slitherZ = 0; }
+    model = glm::translate(modelviewMat, glm::vec3( 0.0f + slitherX + goX, 0.0f + 0.25f, 4.0f + slitherZ - goZa - goZb));
     model = glm::scale(model, glm::vec3(1, 1, scaleZ));
 
+    glm::mat4x4 modelviewITMat = glm::transpose(glm::inverse(model));
     glUniformMatrix4fv(mp_location, 1, GL_FALSE, &projMat[0][0]);
     glUniformMatrix4fv(mv_location, 1, GL_FALSE, &model[0][0]);
-    glBindVertexArray(vertex_array_object[13]);
-    // Draws the elements in the order defined by the index buffer object (IBO)
+    glUniformMatrix4fv(mvit_location, 1, GL_FALSE, &modelviewITMat[0][0]);
+    glUniform4fv(3, 1, light0.getPosition()); glUniform4fv(4, 1, light0.getAmbient()); glUniform4fv(5, 1, light0.getDiffuse()); glUniform4fv(6, 1, light0.getSpecular());
+    glUniform4fv(7, 1, material0.getEmission()); glUniform4fv(8, 1, material0.getAmbient()); glUniform4fv(9, 1, material0.getDiffuse()); glUniform4fv(10, 1, material0.getSpecular()); glUniform1f(11, material0.getShininess());
+
+    // Schlangen-Textur auf Slot 0 legen
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, snakeTextureID);
+
+    glBindVertexArray(vertex_array_object[3]);
     glDrawElements(GL_TRIANGLE_STRIP, box0.getNoOfIndicesForBox(), GL_UNSIGNED_INT, nullptr);
-}
-
-void GameRenderer::displayPyramid(){
-
-    // Get a handle for our "MV" and "MVP" uniform
-    // Only during the initialisation
-    GLint mp_location = glGetUniformLocation(shaderProgramP.getShaderProgramID(), "projectionMatrix");
-    GLint mv_location = glGetUniformLocation(shaderProgramP.getShaderProgramID(), "modelviewMatrix");
-
-    //glBindVertexArray(vertex_array_object);
-    glUseProgram(shaderProgramP.getShaderProgramID());
-
-    glm::mat4x4  model(1.0f);
-
-
-    /*model = glm::translate(modelviewMat, glm::vec3(
-        0.0f + slitherX + goX,
-        0.0f + 0.25f,
-        4 + slitherZ - goZa - goZb));*/
-    model = glm::translate(modelviewMat, glm::vec3(0.0f,1.1f,0.0f));
-    //model = glm::rotate(model, glm::radians(45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    //model = glm::scale(model, glm::vec3(1, 1, scaleZ));
-
-    glUniformMatrix4fv(mp_location, 1, GL_FALSE, &projMat[0][0]);
-    glUniformMatrix4fv(mv_location, 1, GL_FALSE, &model[0][0]);
-    glBindVertexArray(vertex_array_object[14]);
-    // Draws the elements in the order defined by the index buffer object (IBO)
-    glDrawElements(GL_TRIANGLE_STRIP, pyramid.getNoOfIndicesForPyramid(), GL_UNSIGNED_INT, nullptr);
 }
 
 void GameRenderer::displayObject2(){
@@ -1129,7 +607,7 @@ void GameRenderer::displayObject2(){
 
     glUniformMatrix4fv(mp_location, 1, GL_FALSE, &projMat[0][0]);
     glUniformMatrix4fv(mv_location, 1, GL_FALSE, &model[0][0]);
-    glBindVertexArray(vertex_array_object[2]);
+    glBindVertexArray(vertex_array_object[4]);
     // Draws the elements in the order defined by the index buffer object (IBO)
     glDrawElements(GL_TRIANGLE_STRIP, cone0.getNoOfIndices(), GL_UNSIGNED_INT, nullptr);
 }
@@ -1149,155 +627,9 @@ void GameRenderer::displayObject3(){
 
     glUniformMatrix4fv(mp_location, 1, GL_FALSE, &projMat[0][0]);
     glUniformMatrix4fv(mv_location, 1, GL_FALSE, &model[0][0]);
-    glBindVertexArray(vertex_array_object[3]);
-    // Draws the elements in the order defined by the index buffer object (IBO)
-    glDrawElements(GL_TRIANGLE_STRIP, roof0.getNoOfIndices(), GL_UNSIGNED_INT, nullptr);
-}
-
-void GameRenderer::displayObject4(){
-
-    // Get a handle for our "MV" and "MVP" uniform
-    // Only during the initialisation
-    GLint mp_location = glGetUniformLocation(shaderProgram2.getShaderProgramID(), "projectionMatrix");
-    GLint mv_location = glGetUniformLocation(shaderProgram2.getShaderProgramID(), "modelviewMatrix");
-
-    //glBindVertexArray(vertex_array_object);
-    glUseProgram(shaderProgram2.getShaderProgramID());
-
-    glm::mat4x4  model(1.0f);
-    model = glm::translate(modelviewMat, glm::vec3(0.0f, 0.0f, 0.0f));
-
-    glUniformMatrix4fv(mp_location, 1, GL_FALSE, &projMat[0][0]);
-    glUniformMatrix4fv(mv_location, 1, GL_FALSE, &model[0][0]);
-    glBindVertexArray(vertex_array_object[4]);
-    // Draws the elements in the order defined by the index buffer object (IBO)
-    glDrawElements(GL_TRIANGLE_STRIP, treelog.getNoOfIndices(), GL_UNSIGNED_INT, nullptr);
-}
-
-void GameRenderer::displayObject5(){
-
-    // Get a handle for our "MV" and "MVP" uniform
-    // Only during the initialisation
-    GLint mp_location = glGetUniformLocation(shaderProgram2.getShaderProgramID(), "projectionMatrix");
-    GLint mv_location = glGetUniformLocation(shaderProgram2.getShaderProgramID(), "modelviewMatrix");
-
-    //glBindVertexArray(vertex_array_object);
-    glUseProgram(shaderProgram2.getShaderProgramID());
-
-    glm::mat4x4  model(1.0f);
-    model = glm::translate(modelviewMat, glm::vec3(0.0f, 0.7f, 0.0f));
-    //model = glm::rotate(model, glm::radians(180.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-
-    glUniformMatrix4fv(mp_location, 1, GL_FALSE, &projMat[0][0]);
-    glUniformMatrix4fv(mv_location, 1, GL_FALSE, &model[0][0]);
     glBindVertexArray(vertex_array_object[5]);
     // Draws the elements in the order defined by the index buffer object (IBO)
-    glDrawElements(GL_TRIANGLE_STRIP, treecrown.getNoOfIndices(), GL_UNSIGNED_INT, nullptr);
-}
-
-void GameRenderer::displayCony(){
-    GLint mp_location = glGetUniformLocation(shaderProgram2.getShaderProgramID(), "projectionMatrix");
-    GLint mv_location = glGetUniformLocation(shaderProgram2.getShaderProgramID(), "modelviewMatrix");
-
-    //glBindVertexArray(vertex_array_object);
-    glUseProgram(shaderProgram2.getShaderProgramID());
-
-    glm::mat4x4  model(1.0f);
-    model = glm::translate(modelviewMat, glm::vec3(0.0f, 0.0f, 0.6f));
-
-    glUniformMatrix4fv(mp_location, 1, GL_FALSE, &projMat[0][0]);
-    glUniformMatrix4fv(mv_location, 1, GL_FALSE, &model[0][0]);
-    glBindVertexArray(vertex_array_object[6]);
-    // Draws the elements in the order defined by the index buffer object (IBO)
-    glDrawElements(GL_TRIANGLE_STRIP, cony.getNoOfIndices(), GL_UNSIGNED_INT, nullptr);
-}
-
-void GameRenderer::displayIce(){
-    GLint mp_location = glGetUniformLocation(shaderProgramA.getShaderProgramID(), "projectionMatrix");
-    GLint mv_location = glGetUniformLocation(shaderProgramA.getShaderProgramID(), "modelviewMatrix");
-
-    //glBindVertexArray(vertex_array_object);
-    glUseProgram(shaderProgramA.getShaderProgramID());
-
-    glm::mat4x4  model(1.0f);
-
-    model = glm::translate(modelviewMat, glm::vec3(0.0, 0.44, 0.6));
-    model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-
-    glUniformMatrix4fv(mp_location, 1, GL_FALSE, &projMat[0][0]);
-    glUniformMatrix4fv(mv_location, 1, GL_FALSE, &model[0][0]);
-
-    glBindVertexArray(vertex_array_object[7]);
-    // Draws the elements in the order defined by the index buffer object (IBO)
-    glDrawElements(GL_TRIANGLE_STRIP, ice.getNoOfIndices(), GL_UNSIGNED_INT, nullptr);
-}
-
-void GameRenderer::displayHouse(float z){
-    glm::mat4x4  model(1.0f);
-
-    model = glm::translate(modelviewMat, glm::vec3(0.0f, 0.0f, 0.0f + z));
-    displayCube(model);
-
-    model = glm::translate(modelviewMat, glm::vec3(0.0f, 0.4f, 0.0f + z));
-    displayRoof(model);
-}
-
-void GameRenderer::displayCube(glm::mat4x4 m){
-    GLint mp_location = glGetUniformLocation(shaderProgramB.getShaderProgramID(), "projectionMatrix");
-    GLint mv_location = glGetUniformLocation(shaderProgramB.getShaderProgramID(), "modelviewMatrix");
-
-    //glBindVertexArray(vertex_array_object);
-    glUseProgram(shaderProgramB.getShaderProgramID());
-
-    glm::mat4x4  model = m;
-    //model = glm::translate(modelviewMat, glm::vec3(0.0f, 0.0f, 0.0f));
-
-    glUniformMatrix4fv(mp_location, 1, GL_FALSE, &projMat[0][0]);
-    glUniformMatrix4fv(mv_location, 1, GL_FALSE, &model[0][0]);
-    glBindVertexArray(vertex_array_object[8]);
-    // Draws the elements in the order defined by the index buffer object (IBO)
-    glDrawElements(GL_TRIANGLE_STRIP, cube.getNoOfIndicesForBox(), GL_UNSIGNED_INT, nullptr);
-}
-
-void GameRenderer::displayRoof(glm::mat4x4 m){
-    GLint mp_location = glGetUniformLocation(shaderProgram3.getShaderProgramID(), "projectionMatrix");
-    GLint mv_location = glGetUniformLocation(shaderProgram3.getShaderProgramID(), "modelviewMatrix");
-
-    //glBindVertexArray(vertex_array_object);
-    glUseProgram(shaderProgram3.getShaderProgramID());
-
-    glm::mat4x4  model = m;
-    //model = glm::translate(modelviewMat, glm::vec3(0.0f, 0.4f, 0.0f));
-    model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-
-    glUniformMatrix4fv(mp_location, 1, GL_FALSE, &projMat[0][0]);
-    glUniformMatrix4fv(mv_location, 1, GL_FALSE, &model[0][0]);
-    glBindVertexArray(vertex_array_object[9]);
-    // Draws the elements in the order defined by the index buffer object (IBO)
-    glDrawElements(GL_TRIANGLE_STRIP, roof.getNoOfIndices(), GL_UNSIGNED_INT, nullptr);
-}
-
-void GameRenderer::serialHouse(float z, int a){
-    for(int i=0; i<a; i++){
-        displayHouse(i * z);
-    }
-}
-
-void GameRenderer::displayField(){
-    GLint mp_location = glGetUniformLocation(shaderProgramB.getShaderProgramID(), "projectionMatrix");
-    GLint mv_location = glGetUniformLocation(shaderProgramB.getShaderProgramID(), "modelviewMatrix");
-
-    //glBindVertexArray(vertex_array_object);
-    glUseProgram(shaderProgramB.getShaderProgramID());
-
-    glm::mat4x4  model(0.1f);
-    model = glm::translate(modelviewMat, glm::vec3(0.0f, -0.05f, 0.0f));
-
-    glUniformMatrix4fv(mp_location, 1, GL_FALSE, &projMat[0][0]);
-    glUniformMatrix4fv(mv_location, 1, GL_FALSE, &model[0][0]);
-    glBindVertexArray(vertex_array_object[10]);
-    // Draws the elements in the order defined by the index buffer object (IBO)
-    glDrawElements(GL_TRIANGLE_STRIP, field.getNoOfIndicesForBox(), GL_UNSIGNED_INT, nullptr);
+    glDrawElements(GL_TRIANGLE_STRIP, roof0.getNoOfIndices(), GL_UNSIGNED_INT, nullptr);
 }
 
 void GameRenderer::displayBall(float time){
@@ -1358,9 +690,37 @@ void GameRenderer::displayBall(float time){
     glUniformMatrix4fv(mp_location, 1, GL_FALSE, &projMat[0][0]);
     glUniformMatrix4fv(mv_location, 1, GL_FALSE, &model[0][0]);
 
-    glBindVertexArray(vertex_array_object[11]);
+    glBindVertexArray(vertex_array_object[6]);
     // Draws the elements in the order defined by the index buffer object (IBO)
     glDrawElements(GL_TRIANGLE_STRIP, ball.getNoOfIndices(), GL_UNSIGNED_INT, nullptr);
+}
+
+void GameRenderer::displayPyramid(){
+
+    // Get a handle for our "MV" and "MVP" uniform
+    // Only during the initialisation
+    GLint mp_location = glGetUniformLocation(shaderProgramP.getShaderProgramID(), "projectionMatrix");
+    GLint mv_location = glGetUniformLocation(shaderProgramP.getShaderProgramID(), "modelviewMatrix");
+
+    //glBindVertexArray(vertex_array_object);
+    glUseProgram(shaderProgramP.getShaderProgramID());
+
+    glm::mat4x4  model(1.0f);
+
+
+    /*model = glm::translate(modelviewMat, glm::vec3(
+        0.0f + slitherX + goX,
+        0.0f + 0.25f,
+        4 + slitherZ - goZa - goZb));*/
+    model = glm::translate(modelviewMat, glm::vec3(0.0f,1.1f,0.0f));
+    //model = glm::rotate(model, glm::radians(45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    //model = glm::scale(model, glm::vec3(1, 1, scaleZ));
+
+    glUniformMatrix4fv(mp_location, 1, GL_FALSE, &projMat[0][0]);
+    glUniformMatrix4fv(mv_location, 1, GL_FALSE, &model[0][0]);
+    glBindVertexArray(vertex_array_object[7]);
+    // Draws the elements in the order defined by the index buffer object (IBO)
+    glDrawElements(GL_TRIANGLE_STRIP, pyramid.getNoOfIndicesForPyramid(), GL_UNSIGNED_INT, nullptr);
 }
 
 void::GameRenderer::displaySnake(float z, int a, float time) {
@@ -1386,6 +746,7 @@ void GameRenderer::dispose() {
     shaderProgramA.deleteShaderProgram();
     shaderProgramB.deleteShaderProgram();
     shaderProgram2.deleteShaderProgram();
+    shaderProgram3.deleteShaderProgram();
 
     //glDeleteProgram(shaderProgram0.getShaderProgramID());
     //Vertex Array Object (VAO) und Vertex Buffer (VBO) freigeben

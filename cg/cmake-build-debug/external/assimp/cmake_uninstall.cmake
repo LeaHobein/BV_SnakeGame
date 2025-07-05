@@ -1,8 +1,8 @@
-IF(NOT EXISTS "C:/cgbv_project/Visual_Computing/cg/cmake-build-debug/external/assimp/install_manifest.txt")
-  MESSAGE(FATAL_ERROR "Cannot find install manifest: \"C:/cgbv_project/Visual_Computing/cg/cmake-build-debug/external/assimp/install_manifest.txt\"")
-ENDIF(NOT EXISTS "C:/cgbv_project/Visual_Computing/cg/cmake-build-debug/external/assimp/install_manifest.txt")
+IF(NOT EXISTS "C:/Bildverarbeitung Computergrafik/git alle objekte zsm/Visual_Computing/cg/cmake-build-debug/external/assimp/install_manifest.txt")
+  MESSAGE(FATAL_ERROR "Cannot find install manifest: \"C:/Bildverarbeitung Computergrafik/git alle objekte zsm/Visual_Computing/cg/cmake-build-debug/external/assimp/install_manifest.txt\"")
+ENDIF(NOT EXISTS "C:/Bildverarbeitung Computergrafik/git alle objekte zsm/Visual_Computing/cg/cmake-build-debug/external/assimp/install_manifest.txt")
 
-FILE(READ "C:/cgbv_project/Visual_Computing/cg/cmake-build-debug/external/assimp/install_manifest.txt" files)
+FILE(READ "C:/Bildverarbeitung Computergrafik/git alle objekte zsm/Visual_Computing/cg/cmake-build-debug/external/assimp/install_manifest.txt" files)
 STRING(REGEX REPLACE "\n" ";" files "${files}")
 FOREACH(file ${files})
   MESSAGE(STATUS "Uninstalling \"$ENV{DESTDIR}${file}\"")
