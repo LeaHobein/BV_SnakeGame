@@ -2,10 +2,10 @@
 	"globsDependent" : 
 	[
 		{
-			"expression" : "D:/gotzes/Visual_Computing/src/*.cpp",
+			"expression" : "D:/gotzes/Visual_Computing/bv/src/*.cpp",
 			"paths" : 
 			[
-				"D:/gotzes/Visual_Computing/src/main.cpp"
+				"D:/gotzes/Visual_Computing/bv/src/main.cpp"
 			],
 			"recurse" : true
 		}
@@ -959,8 +959,8 @@
 	"kind" : "cmakeFiles",
 	"paths" : 
 	{
-		"build" : "D:/gotzes/Visual_Computing/cmake-build-debug",
-		"source" : "D:/gotzes/Visual_Computing"
+		"build" : "D:/gotzes/Visual_Computing/bv/cmake-build-debug",
+		"source" : "D:/gotzes/Visual_Computing/bv"
 	},
 	"version" : 
 	{

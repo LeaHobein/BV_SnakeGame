@@ -131,7 +131,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "C:/opencv-411-mingw/install/x64/mingw/lib/OpenCVConfig.cmake"
   "C:/opencv-411-mingw/install/x64/mingw/lib/OpenCVModules-release.cmake"
   "C:/opencv-411-mingw/install/x64/mingw/lib/OpenCVModules.cmake"
-  "D:/gotzes/Visual_Computing/CMakeLists.txt"
+  "D:/gotzes/Visual_Computing/bv/CMakeLists.txt"
   "CMakeFiles/4.0.2/CMakeCCompiler.cmake"
   "CMakeFiles/4.0.2/CMakeCXXCompiler.cmake"
   "CMakeFiles/4.0.2/CMakeRCCompiler.cmake"

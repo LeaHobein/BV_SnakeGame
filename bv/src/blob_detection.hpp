@@ -69,8 +69,8 @@ void detectAndDrawBlobs(cv::Mat& frameMat, cv::Mat& grayImage) {
         }
     }
 
-    // Convert mask to BGR for display (keep original blob detection output)
-    cv::cvtColor(grayImage, grayImage, cv::COLOR_GRAY2BGR);
+    // Keep the green mask as grayscale for better line detection
+    // The mask will be converted to BGR in the panel composer for display
 }
 
 #endif // BLOB_DETECTION_HPP 
