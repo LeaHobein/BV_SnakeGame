@@ -102,6 +102,7 @@ void detectAndDrawEdgesAndLines(const cv::Mat& frameCopy, const cv::Mat& blobRes
     std::vector<std::vector<cv::Point>> contours;
     cv::findContours(blackMask, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
 
+    int squareIdx = 0;
     for (const auto& contour : contours) {
         // Approximate contour to polygon
         std::vector<cv::Point> approx;
@@ -119,6 +120,22 @@ void detectAndDrawEdgesAndLines(const cv::Mat& frameCopy, const cv::Mat& blobRes
                 if (fillRatio > 0.7) {
                     // Draw yellow outline
                     cv::polylines(cannyAndHough, approx, true, cv::Scalar(0,255,255), 3, cv::LINE_AA);
+
+                    // Compute center of the square (using bounding rect center)
+                    cv::Point center(bound.x + bound.width/2, bound.y + bound.height/2);
+
+                    // Draw the index number at the center
+                    cv::putText(
+                        cannyAndHough,
+                        std::to_string(squareIdx),
+                        center,
+                        cv::FONT_HERSHEY_SIMPLEX,
+                        0.5, // font scale
+                        cv::Scalar(255, 255, 255),
+                        2, // thickness
+                        cv::LINE_AA
+                    );
+                    squareIdx++;
                 }
             }
         }

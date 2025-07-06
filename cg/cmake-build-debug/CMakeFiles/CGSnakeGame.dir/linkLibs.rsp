@@ -1,1 +1,0 @@
- "external/glfw-3.4/src/libglfw3d.a" external/glad/libgladd.a external/stb_image/libstb_imaged.a external/assimp/lib/libassimpd.a external/assimp/contrib/zlib/libzlibstaticd.a -static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lwinpthread -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 

@@ -84,6 +84,9 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="D:/gotzes/Visual_Computing/bv/src/line_detection.hpp">
+			<Option target="VideoProcessingStartCode"/>
+		</Unit>
 		<Unit filename="D:/gotzes/Visual_Computing/bv/src/main.cpp">
 			<Option target="VideoProcessingStartCode"/>
 		</Unit>
