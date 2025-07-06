@@ -69,6 +69,57 @@ void detectAndDrawBlobs(cv::Mat& frameMat, cv::Mat& grayImage) {
         }
     }
 
+    // --- Additional yellow blob detection ---
+    // Define yellow HSV range
+    std::vector<int> yellowLower = {20, 100, 100};
+    std::vector<int> yellowUpper = {30, 255, 255};
+    
+    // Create yellow mask
+    cv::Mat yellowMask;
+    inRange(hsvImage, yellowLower, yellowUpper, yellowMask);
+    medianBlur(yellowMask, yellowMask, 5);
+
+    // Detect yellow blobs
+    std::vector<cv::KeyPoint> yellowKeypoints;
+    blobDetector->detect(yellowMask, yellowKeypoints);
+
+    // Draw yellow circles for detected yellow blobs
+    for(const cv::KeyPoint& k: yellowKeypoints) {
+        cv::circle(frameMat, k.pt, 30, cv::Scalar(0,255,255), 2); // Yellow color in BGR
+    }
+
+    // --- Blue blob detection ---
+    std::vector<int> blueLower = {100, 50, 50};
+    std::vector<int> blueUpper = {130, 255, 255};
+    cv::Mat blueMask;
+    inRange(hsvImage, blueLower, blueUpper, blueMask);
+    medianBlur(blueMask, blueMask, 5);
+
+    // Detect blue blobs
+    std::vector<cv::KeyPoint> blueKeypoints;
+    blobDetector->detect(blueMask, blueKeypoints);
+
+    // Draw blue circles for detected blue blobs
+    for(const cv::KeyPoint& k: blueKeypoints) {
+        cv::circle(frameMat, k.pt, 30, cv::Scalar(255,0,0), 2); // blue color in BGR
+    }
+
+    // --- Red blob detection ---
+    cv::Mat redMask1, redMask2, redMask;
+    inRange(hsvImage, cv::Scalar(0, 100, 100), cv::Scalar(10, 255, 255), redMask1);
+    inRange(hsvImage, cv::Scalar(160, 100, 100), cv::Scalar(179, 255, 255), redMask2);
+    cv::bitwise_or(redMask1, redMask2, redMask); //Masken mit bitwise or kombinieren
+    medianBlur(redMask, redMask, 5);
+
+    // Detect red blobs
+    std::vector<cv::KeyPoint> redKeypoints;
+    blobDetector->detect(redMask, redKeypoints);
+
+    // Draw red circles for detected red blobs
+    for(const cv::KeyPoint& k: redKeypoints) {
+        cv::circle(frameMat, k.pt, 30, cv::Scalar(0,0,255), 2); // red color in BGR
+    }
+
     // Keep the green mask as grayscale for better line detection
     // The mask will be converted to BGR in the panel composer for display
 }
