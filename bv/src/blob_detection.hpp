@@ -53,30 +53,6 @@ void detectAndDrawBlobs(cv::Mat& frameMat, cv::Mat& grayImage) {
     std::vector<std::vector<cv::Point>> contours;
     std::vector<cv::Vec4i> hierarchy;
     cv::findContours(greenMask, contours, hierarchy, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
-    
-    // Process each contour to find square-like shapes
-    for (const auto& contour : contours) {
-        // Approximate the contour to a polygon
-        double epsilon = 0.02 * cv::arcLength(contour, true);
-        std::vector<cv::Point> approx;
-        cv::approxPolyDP(contour, approx, epsilon, true);
-        
-        // Check if it's a quadrilateral (4 corners)
-        if (approx.size() == 4) {
-            // Calculate area to filter out very small contours
-            double area = cv::contourArea(approx);
-            if (area > 1000) { // Minimum area threshold
-                
-                // Draw dots at the four corner points
-                for (const auto& corner : approx) {
-                    cv::circle(frameMat, corner, 10, cv::Scalar(255, 255, 255), 2); // White outline
-                }
-                
-                // Draw the square outline in green
-                cv::polylines(frameMat, std::vector<std::vector<cv::Point>>{approx}, true, cv::Scalar(0, 255, 0), 2);
-            }
-        }
-    }
 
     // --- Additional yellow blob detection ---
     // Define yellow HSV range
@@ -149,28 +125,27 @@ void detectAndDrawBlobs(cv::Mat& frameMat, cv::Mat& grayImage) {
     checkBlobs(blueKeypoints, "blue");
     checkBlobs(redKeypoints, "red");
     // Optionally: print or use blobsInSquares as needed
-    for(const auto& b : blobsInSquares) {
-        std::string label = b.color + " in " + std::to_string(b.squareIndex);
 
-        cv::Point textPos;
-        bool found = false;
-        for(const auto& sq : yellowSquares) {
-            if(sq.index == b.squareIndex) {
-                textPos = sq.center;
-                found = true;
-                break;
+    // Only display labels if exactly  49 squares are detected
+    if (yellowSquares.size() == 49) {
+        for(const auto& b : blobsInSquares) {
+            std::string label = b.color + " in " + std::to_string(b.squareIndex);
+            cv::Point textPos;
+            for(const auto& sq : yellowSquares) {
+                if(sq.index == b.squareIndex) {
+                    textPos = sq.center;
+                    break;
+                }
             }
+            textPos.y += 30;
+            textPos.x = std::max(0, std::min(textPos.x, frameMat.cols - 1));
+            textPos.y = std::max(0, std::min(textPos.y, frameMat.rows - 1));
+            cv::putText(
+                frameMat, label, textPos,
+                cv::FONT_HERSHEY_SIMPLEX, 1.0,
+                cv::Scalar(0,0,0), 3, cv::LINE_AA
+            );
         }
-
-        textPos.y += 30;
-        textPos.x = std::max(0, std::min(textPos.x, frameMat.cols - 1));
-        textPos.y = std::max(0, std::min(textPos.y, frameMat.rows - 1));
-        
-        cv::putText(
-            frameMat, label, textPos,
-            cv::FONT_HERSHEY_SIMPLEX, 1.0,
-            cv::Scalar(0,0,0), 3, cv::LINE_AA
-        );
     }
 
     // Keep the green mask as grayscale for better line detection
