@@ -6,6 +6,15 @@
 #include <opencv2/features2d.hpp>
 #include <opencv2/imgproc.hpp>
 #include <vector>
+#include "line_detection.hpp"
+#include <string>
+
+// Struct to store blob-in-square info
+struct BlobInSquare {
+    std::string color;
+    int squareIndex;
+    cv::Point2f blobCenter;
+};
 
 void detectAndDrawBlobs(cv::Mat& frameMat, cv::Mat& grayImage) {
     cvtColor(frameMat, grayImage, cv::COLOR_BGR2HSV);
@@ -118,6 +127,50 @@ void detectAndDrawBlobs(cv::Mat& frameMat, cv::Mat& grayImage) {
     // Draw red circles for detected red blobs
     for(const cv::KeyPoint& k: redKeypoints) {
         cv::circle(frameMat, k.pt, 30, cv::Scalar(0,0,255), 2); // red color in BGR
+    }
+
+    // Get yellow squares from helper
+    auto yellowSquares = findYellowSquares(grayImage);
+    std::vector<BlobInSquare> blobsInSquares;
+
+    // For each color, check if blob is inside a yellow square
+    auto checkBlobs = [&](const std::vector<cv::KeyPoint>& keypoints, const std::string& color) {
+        for(const cv::KeyPoint& k: keypoints) {
+            for(const auto& sq : yellowSquares) {
+                double test = cv::pointPolygonTest(sq.contour, k.pt, false);
+                if(test >= 0) {
+                    blobsInSquares.push_back({color, sq.index, k.pt});
+                }
+            }
+        }
+    };
+    checkBlobs(keypoints, "green");
+    checkBlobs(yellowKeypoints, "yellow");
+    checkBlobs(blueKeypoints, "blue");
+    checkBlobs(redKeypoints, "red");
+    // Optionally: print or use blobsInSquares as needed
+    for(const auto& b : blobsInSquares) {
+        std::string label = b.color + " in " + std::to_string(b.squareIndex);
+
+        cv::Point textPos;
+        bool found = false;
+        for(const auto& sq : yellowSquares) {
+            if(sq.index == b.squareIndex) {
+                textPos = sq.center;
+                found = true;
+                break;
+            }
+        }
+
+        textPos.y += 30;
+        textPos.x = std::max(0, std::min(textPos.x, frameMat.cols - 1));
+        textPos.y = std::max(0, std::min(textPos.y, frameMat.rows - 1));
+        
+        cv::putText(
+            frameMat, label, textPos,
+            cv::FONT_HERSHEY_SIMPLEX, 1.0,
+            cv::Scalar(0,0,0), 3, cv::LINE_AA
+        );
     }
 
     // Keep the green mask as grayscale for better line detection

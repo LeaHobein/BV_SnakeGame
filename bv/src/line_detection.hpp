@@ -8,6 +8,60 @@
 #include <algorithm>
 #include <cmath>
 #include <numeric>
+#include <string>
+
+// Helper struct for yellow square info
+struct YellowSquareInfo {
+    std::vector<cv::Point> contour;
+    cv::Point center;
+    int index;
+};
+
+// Helper function to find and sort yellow squares
+inline std::vector<YellowSquareInfo> findYellowSquares(const cv::Mat& blobResult) {
+    std::vector<YellowSquareInfo> result;
+    cv::Mat blackMask;
+    if (blobResult.channels() == 3) {
+        cv::inRange(blobResult, cv::Scalar(0,0,0), cv::Scalar(40,40,40), blackMask);
+    } else {
+        cv::inRange(blobResult, 0, 40, blackMask);
+    }
+    cv::morphologyEx(blackMask, blackMask, cv::MORPH_CLOSE, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5,5)));
+    std::vector<std::vector<cv::Point>> contours;
+    cv::findContours(blackMask, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
+    struct SquareRaw {
+        std::vector<cv::Point> approx;
+        cv::Point center;
+    };
+    std::vector<SquareRaw> squares;
+    for (const auto& contour : contours) {
+        std::vector<cv::Point> approx;
+        cv::approxPolyDP(contour, approx, 0.04 * cv::arcLength(contour, true), true);
+        if (approx.size() == 4 && cv::isContourConvex(approx)) {
+            double area = cv::contourArea(approx);
+            cv::Rect bound = cv::boundingRect(approx);
+            double aspect = (double)bound.width / bound.height;
+            if (area > 400 && aspect > 0.8 && aspect < 1.2) {
+                double fillRatio = area / (bound.width * bound.height);
+                if (fillRatio > 0.7) {
+                    cv::Point center(bound.x + bound.width/2, bound.y + bound.height/2);
+                    squares.push_back({approx, center});
+                }
+            }
+        }
+    }
+    std::sort(squares.begin(), squares.end(), [](const SquareRaw& a, const SquareRaw& b) {
+        int rowTolerance = 20;
+        if (std::abs(a.center.y - b.center.y) < rowTolerance) {
+            return a.center.x < b.center.x;
+        }
+        return a.center.y < b.center.y;
+    });
+    for (size_t i = 0; i < squares.size(); ++i) {
+        result.push_back({squares[i].approx, squares[i].center, static_cast<int>(i)});
+    }
+    return result;
+}
 
 void detectAndDrawEdgesAndLines(const cv::Mat& frameCopy, const cv::Mat& blobResult, cv::Mat& cannyAndHough) {
     cv::Mat edges;
@@ -87,58 +141,19 @@ void detectAndDrawEdgesAndLines(const cv::Mat& frameCopy, const cv::Mat& blobRes
     }
 
     // --- Detect filled black squares in the blob detection result and draw yellow outlines ---
-    // Threshold for black (all channels low)
-    cv::Mat blackMask;
-    if (blobResult.channels() == 3) {
-        cv::inRange(blobResult, cv::Scalar(0,0,0), cv::Scalar(40,40,40), blackMask); // adjust upper bound as needed
-    } else {
-        cv::inRange(blobResult, 0, 40, blackMask);
-    }
-
-    // Morphological closing to fill small holes in black regions
-    cv::morphologyEx(blackMask, blackMask, cv::MORPH_CLOSE, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5,5)));
-
-    // Find contours
-    std::vector<std::vector<cv::Point>> contours;
-    cv::findContours(blackMask, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
-
-    int squareIdx = 0;
-    for (const auto& contour : contours) {
-        // Approximate contour to polygon
-        std::vector<cv::Point> approx;
-        cv::approxPolyDP(contour, approx, 0.04 * cv::arcLength(contour, true), true);
-
-        // Check for quadrilateral (4 sides), convex, and area threshold
-        if (approx.size() == 4 && cv::isContourConvex(approx)) {
-            double area = cv::contourArea(approx);
-            cv::Rect bound = cv::boundingRect(approx);
-            double aspect = (double)bound.width / bound.height;
-            // Area threshold and aspect ratio close to 1 (square)
-            if (area > 400 && aspect > 0.8 && aspect < 1.2) {
-                // Check if filled: area close to bounding rect area
-                double fillRatio = area / (bound.width * bound.height);
-                if (fillRatio > 0.7) {
-                    // Draw yellow outline
-                    cv::polylines(cannyAndHough, approx, true, cv::Scalar(0,255,255), 3, cv::LINE_AA);
-
-                    // Compute center of the square (using bounding rect center)
-                    cv::Point center(bound.x + bound.width/2, bound.y + bound.height/2);
-
-                    // Draw the index number at the center
-                    cv::putText(
-                        cannyAndHough,
-                        std::to_string(squareIdx),
-                        center,
-                        cv::FONT_HERSHEY_SIMPLEX,
-                        0.5, // font scale
-                        cv::Scalar(255, 255, 255),
-                        2, // thickness
-                        cv::LINE_AA
-                    );
-                    squareIdx++;
-                }
-            }
-        }
+    auto yellowSquares = findYellowSquares(blobResult);
+    for (const auto& sq : yellowSquares) {
+        cv::polylines(cannyAndHough, sq.contour, true, cv::Scalar(0,255,255), 3, cv::LINE_AA);
+        cv::putText(
+            cannyAndHough,
+            std::to_string(sq.index),
+            sq.center,
+            cv::FONT_HERSHEY_SIMPLEX,
+            0.5,
+            cv::Scalar(255, 255, 255),
+            2,
+            cv::LINE_AA
+        );
     }
 }
 
