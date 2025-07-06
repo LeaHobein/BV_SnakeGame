@@ -12,6 +12,6 @@ CMake Deprecation Warning:
 --     version: 4.11.0
 --     libraries: opencv_calib3d;opencv_core;opencv_dnn;opencv_features2d;opencv_flann;opencv_gapi;opencv_highgui;opencv_imgcodecs;opencv_imgproc;opencv_ml;opencv_objdetect;opencv_photo;opencv_stitching;opencv_video;opencv_videoio;opencv_world
 --     include path: C:/opencv-411-mingw/install/include
--- Configuring done (0.6s)
+-- Configuring done (0.4s)
 -- Generating done (0.0s)
 -- Build files have been written to: D:/gotzes/Visual_Computing/bv/cmake-build-debug

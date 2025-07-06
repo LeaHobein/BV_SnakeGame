@@ -36,7 +36,7 @@ message(STATUS "    include path: ${OpenCV_INCLUDE_DIRS}")
 file(GLOB_RECURSE MY_SOURCE_FILES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 
 add_executable("${CMAKE_PROJECT_NAME}"
-        src/line_detection.hpp)
+        src/square_detection.hpp)
 
 set_property(TARGET "${CMAKE_PROJECT_NAME}" PROPERTY CXX_STANDARD 23)
 

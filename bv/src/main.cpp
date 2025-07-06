@@ -11,7 +11,7 @@
 #include <iostream>
 #include <windows.h>
 #include "blob_detection.hpp"
-#include "line_detection.hpp"
+#include "square_detection.hpp"
 #include "panel_composer.hpp"
 
 using namespace std;
@@ -49,19 +49,19 @@ int main()
         else
             cout << ".";
 
-        // --- Blob Detection ---
+        //Blob Detection
         cv::Mat greenSquareResult;
         detectAndDrawBlobs(frameMat, grayImage);
 
-        // --- Edge and Line Detection ---
+        // Edge and Line Detection
         Mat frameCopy = frameMat.clone();
         detectAndDrawEdgesAndLines(frameCopy, grayImage, cannyAndHough);
 
-        // --- Result Panels ---
+        //Result Panels
         Mat matResult;
         composeResultPanels(frameMat, grayImage, cannyAndHough, matResult);
 
-        // --- Resize for Display ---
+        //Resize for Display
         double scale = 0.8; // Use 80% of screen width
         int targetWidth = screenWidth * scale;
         int targetHeight = (frameMat.rows * targetWidth) / (frameMat.cols * 3);
@@ -74,7 +74,7 @@ int main()
         Mat resizedResult;
         resize(matResult, resizedResult, Size(targetWidth, targetHeight));
 
-        // --- Show Result ---
+        //Show Result
         imshow("Ein Farbvideo in ein Grauwertvideo umwandeln.", resizedResult);
         int key = waitKey(20); // Wait for a keystroke in the window
 

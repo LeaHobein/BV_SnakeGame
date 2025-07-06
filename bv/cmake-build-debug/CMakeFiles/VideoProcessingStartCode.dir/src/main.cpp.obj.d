@@ -489,7 +489,7 @@ CMakeFiles/VideoProcessingStartCode.dir/src/main.cpp.obj: \
  C:/opencv-411-mingw/install/include/opencv2/flann/miniflann.hpp \
  C:/opencv-411-mingw/install/include/opencv2/flann/defines.h \
  C:/opencv-411-mingw/install/include/opencv2/flann/config.h \
- D:\gotzes\Visual_Computing\bv\src\line_detection.hpp \
+ D:\gotzes\Visual_Computing\bv\src\square_detection.hpp \
  C:/msys64/ucrt64/include/c++/14.2.0/numeric \
  C:/msys64/ucrt64/include/c++/14.2.0/bits/stl_numeric.h \
  C:/msys64/ucrt64/include/c++/14.2.0/pstl/glue_numeric_defs.h \

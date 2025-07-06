@@ -180,7 +180,7 @@
 	[
 		{
 			"backtrace" : 1,
-			"path" : "src/line_detection.hpp",
+			"path" : "src/square_detection.hpp",
 			"sourceGroupIndex" : 0
 		},
 		{

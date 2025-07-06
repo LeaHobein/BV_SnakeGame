@@ -541,6 +541,6 @@ CMakeFiles/VideoProcessingStartCode.dir/src/main.cpp.obj
  C:/opencv-411-mingw/install/include/opencv2/opencv_modules.hpp
  C:/opencv-411-mingw/install/include/opencv2/videoio.hpp
  D:/gotzes/Visual_Computing/bv/src/blob_detection.hpp
- D:/gotzes/Visual_Computing/bv/src/line_detection.hpp
  D:/gotzes/Visual_Computing/bv/src/panel_composer.hpp
+ D:/gotzes/Visual_Computing/bv/src/square_detection.hpp
 

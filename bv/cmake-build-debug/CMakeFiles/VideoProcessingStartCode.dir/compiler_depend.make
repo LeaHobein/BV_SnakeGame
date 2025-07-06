@@ -540,8 +540,8 @@ CMakeFiles/VideoProcessingStartCode.dir/src/main.cpp.obj: D:/gotzes/Visual_Compu
   C:/opencv-411-mingw/install/include/opencv2/opencv_modules.hpp \
   C:/opencv-411-mingw/install/include/opencv2/videoio.hpp \
   D:/gotzes/Visual_Computing/bv/src/blob_detection.hpp \
-  D:/gotzes/Visual_Computing/bv/src/line_detection.hpp \
-  D:/gotzes/Visual_Computing/bv/src/panel_composer.hpp
+  D:/gotzes/Visual_Computing/bv/src/panel_composer.hpp \
+  D:/gotzes/Visual_Computing/bv/src/square_detection.hpp
 
 
 C:/msys64/ucrt64/include/c++/14.2.0/bits/iterator_concepts.h:
@@ -742,6 +742,8 @@ C:/msys64/ucrt64/include/c++/14.2.0/bits/basic_ios.h:
 
 C:/msys64/ucrt64/include/c++/14.2.0/bits/cxxabi_init_exception.h:
 
+D:/gotzes/Visual_Computing/bv/src/square_detection.hpp:
+
 C:/msys64/ucrt64/include/processthreadsapi.h:
 
 C:/msys64/ucrt64/include/c++/14.2.0/bits/locale_facets_nonio.tcc:
@@ -873,8 +875,6 @@ C:/msys64/ucrt64/include/c++/14.2.0/bits/shared_ptr_atomic.h:
 C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/hresetintrin.h:
 
 C:/msys64/ucrt64/include/c++/14.2.0/bits/shared_ptr_base.h:
-
-D:/gotzes/Visual_Computing/bv/src/line_detection.hpp:
 
 C:/msys64/ucrt64/include/mmeapi.h:
 

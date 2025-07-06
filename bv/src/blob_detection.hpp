@@ -1,15 +1,14 @@
 #ifndef BLOB_DETECTION_HPP
 #define BLOB_DETECTION_HPP
 
-// Blob detection helper for grid/feature detection
 #include <opencv2/core.hpp>
 #include <opencv2/features2d.hpp>
 #include <opencv2/imgproc.hpp>
 #include <vector>
-#include "line_detection.hpp"
+#include "square_detection.hpp"
 #include <string>
 
-// Struct to store blob-in-square info
+// speichert blob-in-square info
 struct BlobInSquare {
     std::string color;
     int squareIndex;
@@ -34,82 +33,80 @@ void detectAndDrawBlobs(cv::Mat& frameMat, cv::Mat& grayImage) {
         cv::circle(frameMat, k.pt, 30, cv::Scalar(0,0,0), 2);
     }
 
-    // Additional contour detection for green square corner detection
-    // Create a separate mask for square detection with more restrictive green range
+    //grüne Maske
     cv::Mat hsvImage;
     cvtColor(frameMat, hsvImage, cv::COLOR_BGR2HSV);
-    std::vector<int> squareLower = {35, 50, 50};   // More restrictive green range for squares
+    std::vector<int> squareLower = {35, 50, 50};
     std::vector<int> squareUpper = {85, 255, 255};
     
     cv::Mat greenMask;
     inRange(hsvImage, squareLower, squareUpper, greenMask);
     
-    // Apply morphological operations to clean up the mask
+    //Maske säubern
     cv::Mat kernel = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3));
     cv::morphologyEx(greenMask, greenMask, cv::MORPH_CLOSE, kernel);
     cv::morphologyEx(greenMask, greenMask, cv::MORPH_OPEN, kernel);
     
-    // Find contours for square detection
+    //Contours finden
     std::vector<std::vector<cv::Point>> contours;
     std::vector<cv::Vec4i> hierarchy;
     cv::findContours(greenMask, contours, hierarchy, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
 
-    // --- Additional yellow blob detection ---
-    // Define yellow HSV range
+    //yellow blob detection
     std::vector<int> yellowLower = {20, 100, 100};
     std::vector<int> yellowUpper = {30, 255, 255};
     
-    // Create yellow mask
+    //gelbe Maske
     cv::Mat yellowMask;
     inRange(hsvImage, yellowLower, yellowUpper, yellowMask);
     medianBlur(yellowMask, yellowMask, 5);
 
-    // Detect yellow blobs
+    //Gelbe blobs finden
     std::vector<cv::KeyPoint> yellowKeypoints;
     blobDetector->detect(yellowMask, yellowKeypoints);
 
-    // Draw yellow circles for detected yellow blobs
+    //gelbe Kreise drumherum malen
     for(const cv::KeyPoint& k: yellowKeypoints) {
-        cv::circle(frameMat, k.pt, 30, cv::Scalar(0,255,255), 2); // Yellow color in BGR
+        cv::circle(frameMat, k.pt, 30, cv::Scalar(0,255,255), 2); // Yellow
     }
 
-    // --- Blue blob detection ---
+    //Blue blob detection
     std::vector<int> blueLower = {100, 50, 50};
     std::vector<int> blueUpper = {130, 255, 255};
     cv::Mat blueMask;
     inRange(hsvImage, blueLower, blueUpper, blueMask);
     medianBlur(blueMask, blueMask, 5);
 
-    // Detect blue blobs
+    //blaue blobs finden
     std::vector<cv::KeyPoint> blueKeypoints;
     blobDetector->detect(blueMask, blueKeypoints);
 
-    // Draw blue circles for detected blue blobs
+    //blaue Kreise drumherum malen
     for(const cv::KeyPoint& k: blueKeypoints) {
-        cv::circle(frameMat, k.pt, 30, cv::Scalar(255,0,0), 2); // blue color in BGR
+        cv::circle(frameMat, k.pt, 30, cv::Scalar(255,0,0), 2); // blue
     }
 
-    // --- Red blob detection ---
+    //Red blob detection
     cv::Mat redMask1, redMask2, redMask;
     inRange(hsvImage, cv::Scalar(0, 100, 100), cv::Scalar(10, 255, 255), redMask1);
     inRange(hsvImage, cv::Scalar(160, 100, 100), cv::Scalar(179, 255, 255), redMask2);
     cv::bitwise_or(redMask1, redMask2, redMask); //Masken mit bitwise or kombinieren
     medianBlur(redMask, redMask, 5);
 
-    // Detect red blobs
+    //rote Blobs finden
     std::vector<cv::KeyPoint> redKeypoints;
     blobDetector->detect(redMask, redKeypoints);
 
-    // Draw red circles for detected red blobs
+    //rote Kreise drumherum malen
     for(const cv::KeyPoint& k: redKeypoints) {
-        cv::circle(frameMat, k.pt, 30, cv::Scalar(0,0,255), 2); // red color in BGR
+        cv::circle(frameMat, k.pt, 30, cv::Scalar(0,0,255), 2); // red
     }
 
-    // Get yellow squares from helper
+    //gelbe Kästchen vom helper holen
     auto yellowSquares = findYellowSquares(grayImage);
     std::vector<BlobInSquare> blobsInSquares;
 
-    // For each color, check if blob is inside a yellow square
+    //für jede Farbe checken, ob sie in einem der Kästchen sind
     auto checkBlobs = [&](const std::vector<cv::KeyPoint>& keypoints, const std::string& color) {
         for(const cv::KeyPoint& k: keypoints) {
             for(const auto& sq : yellowSquares) {
@@ -124,9 +121,8 @@ void detectAndDrawBlobs(cv::Mat& frameMat, cv::Mat& grayImage) {
     checkBlobs(yellowKeypoints, "yellow");
     checkBlobs(blueKeypoints, "blue");
     checkBlobs(redKeypoints, "red");
-    // Optionally: print or use blobsInSquares as needed
 
-    // Only display labels if exactly  49 squares are detected
+    //Text erscheint nur, wenn genau 49 (7x7) Kästchen gefunden wurden
     if (yellowSquares.size() == 49) {
         for(const auto& b : blobsInSquares) {
             std::string label = b.color + " in " + std::to_string(b.squareIndex);
@@ -147,9 +143,6 @@ void detectAndDrawBlobs(cv::Mat& frameMat, cv::Mat& grayImage) {
             );
         }
     }
-
-    // Keep the green mask as grayscale for better line detection
-    // The mask will be converted to BGR in the panel composer for display
 }
 
 #endif // BLOB_DETECTION_HPP 

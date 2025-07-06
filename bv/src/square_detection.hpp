@@ -1,7 +1,6 @@
-#ifndef LINE_DETECTION_HPP
-#define LINE_DETECTION_HPP
+#ifndef SQUARE_DETECTION_HPP
+#define SQUARE_DETECTION_HPP
 
-// Line and edge detection helpers for grid/feature detection
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp>
 #include <vector>
@@ -10,14 +9,14 @@
 #include <numeric>
 #include <string>
 
-// Helper struct for yellow square info
+// Helper struct für yellow square info
 struct YellowSquareInfo {
     std::vector<cv::Point> contour;
     cv::Point center;
     int index;
 };
 
-// Helper function to find and sort yellow squares
+// Helper Funktion um gelbe Kästchen zu finden und zu sortieren
 inline std::vector<YellowSquareInfo> findYellowSquares(const cv::Mat& blobResult) {
     std::vector<YellowSquareInfo> result;
     cv::Mat blackMask;
@@ -67,8 +66,7 @@ inline std::vector<YellowSquareInfo> findYellowSquares(const cv::Mat& blobResult
 void detectAndDrawEdgesAndLines(const cv::Mat& frameCopy, const cv::Mat& blobResult, cv::Mat& cannyAndHough) {
     cv::Mat edges;
     
-    // Use the blob detection result (which contains green regions) for line detection
-    // Convert blob result to grayscale if it's not already
+    // Blob detection result wird benutzt (enthält grüne Regionen)
     cv::Mat blobGray;
     if (blobResult.channels() == 3) {
         cv::cvtColor(blobResult, blobGray, cv::COLOR_BGR2GRAY);
@@ -76,33 +74,31 @@ void detectAndDrawEdgesAndLines(const cv::Mat& frameCopy, const cv::Mat& blobRes
         blobGray = blobResult.clone();
     }
     
-    // Apply blur to reduce noise in the blob regions
+    // weichzeichnen um Störungen zu reduzieren
     cv::blur(blobGray, edges, cv::Size(3, 3));
     
-    // Apply Canny edge detection on the green blob regions
-    // Lowered Canny thresholds for more sensitivity on green regions
+    // Canny edge detection
     cv::Canny(edges, edges, 50, 80, 3);
 
-    // Morphological closing to connect broken lines within green regions
+    // Morphological closing um abgetrennte Linien wieder zusammenzuführen
     cv::Mat morph;
     cv::Mat kernel = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5));
     cv::morphologyEx(edges, morph, cv::MORPH_CLOSE, kernel);
 
-    // Prepare output image (black background)
+    // output image vorbereiten (black background)
     cannyAndHough = cv::Mat(frameCopy.size(), frameCopy.type(), cv::Scalar::all(0));
 
-    // Draw Canny edges from green regions in red channel
+    //canny Kanten in rot malen
     std::vector<cv::Mat> channels(3);
     cv::split(cannyAndHough, channels);
     channels[2] = edges; // Red channel shows edges from green blob regions
     cv::merge(channels, cannyAndHough);
 
-    // Detect lines using Hough transform on the green blob regions
+    // Hough Linienerkennung
     std::vector<cv::Vec4i> linesP;
-    // Adjusted parameters for detecting lines within green regions
     cv::HoughLinesP(morph, linesP, 1, CV_PI / 180, 50, 40, 25);
 
-    // --- Detect filled black squares in the blob detection result and draw yellow outlines ---
+    //schwarze Kästchen suchen und gelbe Quadrate an die jeweiligen Stellen malen
     auto yellowSquares = findYellowSquares(blobResult);
     for (const auto& sq : yellowSquares) {
         cv::polylines(cannyAndHough, sq.contour, true, cv::Scalar(0,255,255), 3, cv::LINE_AA);
@@ -119,4 +115,4 @@ void detectAndDrawEdgesAndLines(const cv::Mat& frameCopy, const cv::Mat& blobRes
     }
 }
 
-#endif // LINE_DETECTION_HPP 
+#endif // SQUARE_DETECTION_HPP
