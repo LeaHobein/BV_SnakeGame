@@ -1,0 +1,3 @@
+D:/SoSe2025/BV_SnakeGame/code/cmake-build-debug/CMakeFiles/VideoProcessingStartCode.dir
+D:/SoSe2025/BV_SnakeGame/code/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/SoSe2025/BV_SnakeGame/code/cmake-build-debug/CMakeFiles/rebuild_cache.dir

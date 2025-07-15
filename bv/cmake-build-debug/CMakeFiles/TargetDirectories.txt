@@ -1,3 +1,0 @@
-D:/gotzes/Visual_Computing/bv/cmake-build-debug/CMakeFiles/VideoProcessingStartCode.dir
-D:/gotzes/Visual_Computing/bv/cmake-build-debug/CMakeFiles/edit_cache.dir
-D:/gotzes/Visual_Computing/bv/cmake-build-debug/CMakeFiles/rebuild_cache.dir
