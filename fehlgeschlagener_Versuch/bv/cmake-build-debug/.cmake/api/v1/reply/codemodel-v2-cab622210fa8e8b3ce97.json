@@ -1,0 +1,60 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.27"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "VideoProcessingStartCode",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "VideoProcessingStartCode::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-VideoProcessingStartCode-Debug-c94a223ba86ff94cc349.json",
+					"name" : "VideoProcessingStartCode",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/leaho/Downloads/BV_SnakeGame-Grid/BV_SnakeGame-Grid/bv/cmake-build-debug",
+		"source" : "C:/Users/leaho/Downloads/BV_SnakeGame-Grid/BV_SnakeGame-Grid/bv"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 8
+	}
+}
